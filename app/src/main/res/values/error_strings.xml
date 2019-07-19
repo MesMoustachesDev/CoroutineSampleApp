@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="generic_error_noInternet">No network connectivity</string>
-    <string name="generic_error_unhandled">Unhandled error</string>
-    <string name="generic_error_server">Server error</string>
-    <string name="generic_empty_message">Empty message</string>
+    <string name="generic_error_noInternet">Erreur de connexion internet</string>
+    <string name="generic_error_unhandled">Erreur inatendue</string>
+    <string name="generic_error_server">Error serveur</string>
+    <string name="generic_empty_message">Message vide</string>
 </resources>

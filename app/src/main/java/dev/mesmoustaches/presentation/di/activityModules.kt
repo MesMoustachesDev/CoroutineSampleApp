@@ -1,7 +1,10 @@
-package dev.mesmoustaches.di
+package dev.mesmoustaches.presentation.di
 
 import android.content.Intent
 import dev.mesmoustaches.data.di.databaseModule
+import dev.mesmoustaches.data.di.networkModules
+import dev.mesmoustaches.data.di.repoModules
+import dev.mesmoustaches.domain.di.useCaseModules
 import dev.mesmoustaches.presentation.home.HomeActivity
 import dev.mesmoustaches.presentation.home.HomeActivityViewModel
 import dev.mesmoustaches.presentation.routing.HomeScreen
@@ -19,6 +22,3 @@ val activityModules = module {
 val viewModelModules = module {
     viewModel { HomeActivityViewModel(get(), get()) }
 }
-
-val appModules =
-    networkModules + activityModules + viewModelModules + repoModules + useCaseModules + databaseModule

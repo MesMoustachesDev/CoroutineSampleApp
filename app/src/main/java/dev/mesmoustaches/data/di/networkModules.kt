@@ -1,4 +1,4 @@
-package dev.mesmoustaches.di
+package dev.mesmoustaches.data.di
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

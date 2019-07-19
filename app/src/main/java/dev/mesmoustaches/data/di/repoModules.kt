@@ -1,4 +1,4 @@
-package dev.mesmoustaches.di
+package dev.mesmoustaches.data.di
 
 import dev.mesmoustaches.data.repository.EmployeeRepository
 import dev.mesmoustaches.data.repository.EmployeeRepositoryImpl
