@@ -20,10 +20,14 @@ class HomeActivityViewModel(
         }
 
     init {
+        refresh()
+    }
+
+    fun refresh(forceUpdate: Boolean = false) {
         launchDataLoad(loadingLiveData,
             errorLiveData,
             getError) {
-            employeesLiveDataUseCase.execute()
+            employeesLiveDataUseCase.execute(forceUpdate)
         }
     }
 }

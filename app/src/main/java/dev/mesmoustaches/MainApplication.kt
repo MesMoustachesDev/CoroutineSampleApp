@@ -2,12 +2,9 @@ package dev.mesmoustaches
 
 import android.app.Application
 import com.facebook.stetho.Stetho
-import dev.mesmoustaches.data.di.databaseModule
-import dev.mesmoustaches.data.di.networkModules
-import dev.mesmoustaches.data.di.repoModules
+import dev.mesmoustaches.data.di.dataModules
 import dev.mesmoustaches.domain.di.useCaseModules
-import dev.mesmoustaches.presentation.di.activityModules
-import dev.mesmoustaches.presentation.di.viewModelModules
+import dev.mesmoustaches.presentation.di.presentationModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -25,7 +22,7 @@ class MainApplication : Application() {
             // modules
 
             val appModules =
-                networkModules + activityModules + viewModelModules + repoModules + useCaseModules + databaseModule
+                dataModules + presentationModules  + useCaseModules
             modules(appModules)
         }
 

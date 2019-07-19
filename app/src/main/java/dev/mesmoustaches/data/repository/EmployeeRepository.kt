@@ -7,7 +7,7 @@ interface EmployeeRepository {
     /**
      * Fetch user's animals
      */
-    suspend fun fetchEmployees()
+    suspend fun fetchEmployees(forceUpdate: Boolean = false)
 
     fun getEmployees(): LiveData<List<EmployeeData>>
 }

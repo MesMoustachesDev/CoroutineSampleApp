@@ -8,7 +8,7 @@ import timber.log.Timber
 
 class EmployeesLiveDataUseCase(
     private val employeesRepository: EmployeeRepository
-) : CoroutineUseCase<Void, List<EmployeeDomain>>() {
+) : CoroutineUseCase<Boolean, List<EmployeeDomain>>() {
 
     val data = Transformations.map(employeesRepository.getEmployees()) { list ->
         list.map {
@@ -16,10 +16,10 @@ class EmployeesLiveDataUseCase(
         }
     }
 
-    override suspend fun createCoroutine(input: Void?) {
+    override suspend fun createCoroutine(input: Boolean?) {
         try {
             employeesRepository
-                .fetchEmployees()
+                .fetchEmployees(input ?: false)
         } catch (e: Exception) {
             Timber.e(e, "Error getting employees")
             throw e

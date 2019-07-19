@@ -1,15 +1,18 @@
 package dev.mesmoustaches.data.repository
 
 import androidx.lifecycle.LiveData
+import dev.mesmoustaches.data.common.CacheStrategy
 import dev.mesmoustaches.data.common.DataSource
 import dev.mesmoustaches.data.model.EmployeeData
 import dev.mesmoustaches.data.remote.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class EmployeeRepositoryImpl(
     private val apiService: ApiService,
-    private val localDataSource: DataSource<EmployeeData>
+    private val localDataSource: DataSource<EmployeeData>,
+    private val cacheStrategy: CacheStrategy<EmployeeData>
 ) : EmployeeRepository {
 
     @Volatile
@@ -21,17 +24,23 @@ class EmployeeRepositoryImpl(
         return employees
     }
 
-    override suspend fun fetchEmployees() {
+    override suspend fun fetchEmployees(forceUpdate: Boolean) {
         if (fetchEmployeesRunning) return
-        fetchEmployeesRunning = true
-        withContext(Dispatchers.IO) {
-            try {
-                val result = apiService.getEmployees()
-                localDataSource.add(result)
-            } catch (error: Throwable) {
-                throw error
+        if (!cacheStrategy.isCacheValid() || forceUpdate) {
+            Timber.d("Loading from api")
+            fetchEmployeesRunning = true
+            withContext(Dispatchers.IO) {
+                try {
+                    val result = apiService.getEmployees()
+                    localDataSource.add(result)
+                    cacheStrategy.newCacheSet()
+                } catch (error: Throwable) {
+                    throw error
+                }
             }
+            fetchEmployeesRunning = false
+        } else {
+            Timber.d("Loading from cache")
         }
-        fetchEmployeesRunning = false
     }
 }

@@ -22,6 +22,13 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        setObservers()
+        setListeners()
+
+        homeRecyclerView.adapter = homeAdapter
+    }
+
+    private fun setObservers() {
         nonNullObserve(viewModel.loadingLiveData) {
             Timber.d("Loading: $it")
             loader.show(it)
@@ -36,8 +43,13 @@ class HomeActivity : AppCompatActivity() {
         {
             homeAdapter.update(it)
         }
+    }
 
-        homeRecyclerView.adapter = homeAdapter
+    private fun setListeners() {
+        refresh.setOnRefreshListener {
+            viewModel.refresh(forceUpdate = true)
+            refresh.isRefreshing = false
+        }
     }
 
     companion object {
