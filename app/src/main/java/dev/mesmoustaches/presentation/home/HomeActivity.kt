@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.nonNullObserve
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
-import dev.mesmoustaches.android.view.show
+import dev.mesmoustaches.android.view.linkVisibilityTo
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -29,10 +29,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        nonNullObserve(viewModel.loadingLiveData) {
-            Timber.d("Loading: $it")
-            loader.show(it)
-        }
+        loader.linkVisibilityTo(viewModel.loadingLiveData, this)
 
         nonNullObserve(viewModel.errorLiveData) {
             Timber.e("Error: $it")

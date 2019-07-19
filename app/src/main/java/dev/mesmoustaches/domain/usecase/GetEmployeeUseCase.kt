@@ -6,7 +6,7 @@ import dev.mesmoustaches.data.repository.EmployeeRepository
 import dev.mesmoustaches.domain.model.EmployeeDomain
 import timber.log.Timber
 
-class EmployeesLiveDataUseCase(
+class GetEmployeeUseCase(
     private val employeesRepository: EmployeeRepository
 ) : CoroutineUseCase<Boolean, List<EmployeeDomain>>() {
 

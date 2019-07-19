@@ -1,7 +1,6 @@
 package dev.mesmoustaches.domain.error
 
 import android.content.Context
-import dev.mesmoustaches.data.utils.Failure
 import dev.mesmoustaches.R
 import retrofit2.HttpException
 import java.net.UnknownHostException

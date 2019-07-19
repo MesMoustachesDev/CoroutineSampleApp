@@ -1,6 +1,6 @@
-package dev.mesmoustaches.data.utils
+package dev.mesmoustaches.domain.error
 
-import dev.mesmoustaches.data.utils.Failure.FeatureFailure
+import dev.mesmoustaches.domain.error.Failure.FeatureFailure
 
 /**
  * Base Class for handling errors/failures/exceptions.

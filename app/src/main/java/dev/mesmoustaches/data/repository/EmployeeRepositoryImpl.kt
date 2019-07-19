@@ -37,9 +37,10 @@ class EmployeeRepositoryImpl(
                     cacheStrategy.newCacheSet()
                 } catch (error: Throwable) {
                     throw error
+                } finally {
+                    fetchEmployeesRunning = false
                 }
             }
-            fetchEmployeesRunning = false
         } else {
             Timber.d("Loading from cache")
         }
