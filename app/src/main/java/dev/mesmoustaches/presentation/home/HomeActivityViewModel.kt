@@ -16,7 +16,13 @@ class HomeActivityViewModel(
     val errorLiveData = MutableLiveData<String>()
     val employeesLiveData =
         Transformations.map(employeesLiveDataUseCase.data) { list ->
-            list.map { HomeAdapter.Cell(employeeName = it.name, image = it.picture) }
+            list.map {
+                HomeAdapter.Cell(
+                    id = it.id,
+                    employeeName = it.name,
+                    image = it.picture
+                )
+            }
         }
 
     init {
@@ -24,9 +30,11 @@ class HomeActivityViewModel(
     }
 
     fun refresh(forceUpdate: Boolean = false) {
-        launchDataLoad(loadingLiveData,
+        launchDataLoad(
+            loadingLiveData,
             errorLiveData,
-            getError) {
+            getError
+        ) {
             employeesLiveDataUseCase.execute(forceUpdate)
         }
     }

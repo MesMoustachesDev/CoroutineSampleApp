@@ -32,6 +32,7 @@ class EmployeeRepositoryImpl(
             withContext(Dispatchers.IO) {
                 try {
                     val result = apiService.getEmployees()
+                    localDataSource.remove(DataSource.Spec.All())
                     localDataSource.add(result)
                     cacheStrategy.newCacheSet()
                 } catch (error: Throwable) {

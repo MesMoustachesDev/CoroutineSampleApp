@@ -17,10 +17,6 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
         holder.bind(items[position])
     }
 
-    override fun getItemId(position: Int): Long {
-        return items[position].employeeName.hashCode().toLong()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         return EmployeeViewHolder(
             LayoutInflater.from(parent.context).inflate(
@@ -38,11 +34,6 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
         override fun <T> bind(t: T) {
             val item = t as Cell
             itemView.name.text = item.employeeName
-//            Glide.with(itemView.imageView)
-//                .load(item.image)
-//                .into(itemView.imageView)
-//            itemView.label.text = item.animalName
-//            itemView.setOnClickListener { listener.invoke(item.id) }
         }
     }
 
@@ -58,7 +49,7 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
     ) : DiffUtil.Callback() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldList[oldItemPosition].employeeName == newList[newItemPosition].employeeName
+            oldList[oldItemPosition].id == newList[newItemPosition].id
 
         override fun getOldListSize(): Int = oldList.size
 
@@ -69,6 +60,7 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
     }
 
     data class Cell(
+        val id: String,
         val image: String,
         val employeeName: String
     )

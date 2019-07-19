@@ -12,7 +12,7 @@ class EmployeesLiveDataUseCase(
 
     val data = Transformations.map(employeesRepository.getEmployees()) { list ->
         list.map {
-            EmployeeDomain(name = it.employeeName ?: "", picture = it.profileImage ?: "")
+            EmployeeDomain(id = it.id, name = it.employeeName ?: "", picture = it.profileImage ?: "")
         }
     }
 
