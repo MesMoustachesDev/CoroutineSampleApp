@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.nonNullObserve
+import androidx.lifecycle.nonNullObserveConsume
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
@@ -15,7 +16,9 @@ import timber.log.Timber
 class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeActivityViewModel by viewModel()
     private val homeAdapter: HomeAdapter by lazy {
-        HomeAdapter()
+        HomeAdapter {
+            viewModel.loadMore()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,14 +34,17 @@ class HomeActivity : AppCompatActivity() {
     private fun setObservers() {
         loader.linkVisibilityTo(viewModel.loadingLiveData, this)
 
-        nonNullObserve(viewModel.errorLiveData) {
+        nonNullObserveConsume(viewModel.errorLiveData) {
             Timber.e("Error: $it")
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
 
-        nonNullObserve(viewModel.employeesLiveData)
-        {
+        nonNullObserve(viewModel.eventsLiveData) {
             homeAdapter.update(it)
+        }
+
+        nonNullObserve(viewModel.filtersLiveData) {
+            Timber.e("$it")
         }
     }
 

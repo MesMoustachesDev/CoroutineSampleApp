@@ -1,10 +1,10 @@
-package dev.mesmoustaches.data.repository.cache
+package dev.mesmoustaches.data.events.repository.cache
 
 import dev.mesmoustaches.data.common.CacheStrategy
-import dev.mesmoustaches.data.model.EmployeeData
+import dev.mesmoustaches.data.model.getout.RecordData
 import java.util.*
 
-class EmployeeCacheStrategy: CacheStrategy<EmployeeData> {
+class EventCacheStrategy: CacheStrategy<RecordData> {
     private var time: Long = 0
 
     override fun isCacheValid(): Boolean {

@@ -5,14 +5,12 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dev.mesmoustaches.BuildConfig
 import dev.mesmoustaches.data.common.CacheStrategy
-import dev.mesmoustaches.data.common.DataSource
-import dev.mesmoustaches.data.model.EmployeeData
-import dev.mesmoustaches.data.remote.ApiService
-import dev.mesmoustaches.data.repository.EmployeeRepository
-import dev.mesmoustaches.data.repository.EmployeeRepositoryImpl
-import dev.mesmoustaches.data.repository.cache.EmployeeCacheStrategy
-import dev.mesmoustaches.data.room.DataBase
-import dev.mesmoustaches.data.room.RoomEmployeeDatabase
+import dev.mesmoustaches.data.events.remote.ApiService
+import dev.mesmoustaches.data.events.repository.EventRepository
+import dev.mesmoustaches.data.events.repository.EventRepositoryImpl
+import dev.mesmoustaches.data.events.repository.cache.EventCacheStrategy
+import dev.mesmoustaches.data.model.getout.RecordData
+import dev.mesmoustaches.data.room.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -21,11 +19,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val repoModules = module {
-    single { EmployeeRepositoryImpl(get(), get(), get()) as EmployeeRepository }
+    single { EventRepositoryImpl(get(), get(), get(), get()) as EventRepository }
 }
 
 val cacheModules = module {
-    single { EmployeeCacheStrategy() as CacheStrategy<EmployeeData> }
+    single { EventCacheStrategy() as CacheStrategy<RecordData> }
 }
 
 val netModule = module {
@@ -60,8 +58,11 @@ val databaseModule = module {
             .fallbackToDestructiveMigration()
             .build()
     }
-    single { get<DataBase>().employeeDao() }
-    single { RoomEmployeeDatabase(get()) as DataSource<EmployeeData> }
+    single { get<DataBase>().eventDao() }
+    single { get<DataBase>().filterDao() }
+
+    single { RoomEventsDatabase(get()) as EventsDataSource }
+    single { RoomFilterGroupsDatabase(get()) as FiltersDataSource}
 }
 
 val dataModules = netModule + databaseModule + cacheModules + repoModules

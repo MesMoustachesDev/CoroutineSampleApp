@@ -3,13 +3,16 @@ package dev.mesmoustaches.presentation.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.setTextViewHTML
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.GenericViewHolder
-import kotlinx.android.synthetic.main.item_employee.view.*
+import dev.mesmoustaches.domain.model.EventDomain
+import kotlinx.android.synthetic.main.item_event.view.*
 
-class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
+class HomeAdapter(val needMore: (Int) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
 
     private var items = listOf<Cell>()
 
@@ -18,28 +21,40 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        return EmployeeViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_employee,
-                parent,
-                false
-            )
+        val view = LayoutInflater.from(parent.context).inflate(
+            viewType,
+            parent,
+            false
         )
+        return when (viewType) {
+            R.layout.item_event -> EventViewHolder(view)
+            else -> NeedMoreViewHolder(view, needMore)
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class EmployeeViewHolder(itemView: View) : GenericViewHolder(itemView) {
-
+    inner class EventViewHolder(itemView: View) : GenericViewHolder(itemView) {
         override fun <T> bind(t: T) {
-            val item = t as Cell
-            itemView.name.text = item.employeeName
+            val item = t as Cell.DataCell
+            itemView.name.text = item.title
+            itemView.date.setTextViewHTML(item.date)
+            Glide.with(itemView.image)
+                .load(item.image)
+                .placeholder(R.drawable.logo)
+                .into(itemView.image)
         }
     }
 
-    fun update(clubs: List<Cell>) {
-        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, clubs))
-        items = clubs
+    inner class NeedMoreViewHolder(itemView: View, private val needMore: (Int) -> Unit) : GenericViewHolder(itemView) {
+        override fun <T> bind(t: T) {
+            needMore.invoke(itemCount)
+        }
+    }
+
+    fun update(events: List<Cell>) {
+        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
+        items = events
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -48,20 +63,42 @@ class HomeAdapter : RecyclerView.Adapter<GenericViewHolder>() {
         private val newList: List<Cell>
     ) : DiffUtil.Callback() {
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldList[oldItemPosition].id == newList[newItemPosition].id
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val old = oldList[oldItemPosition]
+            val new = newList[newItemPosition]
+            return (old is Cell.DataCell && new is Cell.DataCell && old.id == new.id)
+        }
 
         override fun getOldListSize(): Int = oldList.size
 
         override fun getNewListSize(): Int = newList.size
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldList[oldItemPosition] == newList[newItemPosition]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val old = oldList[oldItemPosition]
+            val new = newList[newItemPosition]
+            return (old is Cell.DataCell && new is Cell.DataCell && old.title == new.title)
+        }
     }
 
-    data class Cell(
-        val id: String,
-        val image: String,
-        val employeeName: String
-    )
+    override fun getItemViewType(position: Int): Int = when (items[position]) {
+        is Cell.DataCell -> R.layout.item_event
+        is Cell.NeedMore -> R.layout.item_need_more
+    }
+
+    sealed class Cell(val id: String) {
+        class DataCell(
+            id: String,
+            val title: String,
+            val date: String,
+            val image: String?
+        ) : Cell(id)
+
+        object NeedMore : Cell("-1")
+    }
 }
+
+fun EventDomain.toCell() = HomeAdapter.Cell.DataCell(
+    id = id,
+    title = title,
+    date = dateText,
+    image = image)

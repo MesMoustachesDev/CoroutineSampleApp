@@ -16,7 +16,7 @@ val activityModules = module {
 }
 
 val viewModelModules = module {
-    viewModel { HomeActivityViewModel(get(), get()) }
+    viewModel { HomeActivityViewModel(get(), get(), get()) }
 }
 
 val presentationModules = activityModules + viewModelModules

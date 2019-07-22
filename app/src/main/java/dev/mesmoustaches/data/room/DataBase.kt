@@ -2,10 +2,17 @@ package dev.mesmoustaches.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import dev.mesmoustaches.data.model.EmployeeData
+import androidx.room.TypeConverters
+import dev.mesmoustaches.data.model.getout.*
 
-@Database(entities = [EmployeeData::class], version = 1, exportSchema = false)
+@Database(entities = [RecordData::class, FacetGroup::class], version = 2, exportSchema = false)
+
+@TypeConverters(
+    FieldConverter::class,
+    GeometryConverter::class,
+    FacetListConverter::class)
 
 abstract class DataBase : RoomDatabase() {
-    abstract fun employeeDao(): EmployeeDao
+    abstract fun eventDao(): EventsDao
+    abstract fun filterDao(): FilterGroupsDao
 }

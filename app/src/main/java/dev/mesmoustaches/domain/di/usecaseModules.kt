@@ -1,8 +1,10 @@
 package dev.mesmoustaches.domain.di
 
-import dev.mesmoustaches.domain.usecase.GetEmployeeUseCase
+import dev.mesmoustaches.domain.usecase.GetEventsUseCase
+import dev.mesmoustaches.domain.usecase.GetFiltersUseCase
 import org.koin.dsl.module
 
 val useCaseModules = module {
-    factory { GetEmployeeUseCase(get()) }
+    factory { GetEventsUseCase(get()) }
+    factory { GetFiltersUseCase(get()) }
 }
