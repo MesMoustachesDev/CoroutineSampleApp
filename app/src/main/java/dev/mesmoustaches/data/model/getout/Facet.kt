@@ -11,5 +11,8 @@ data class Facet(
     @SerializedName("path")
     val path: String?,
     @SerializedName("state")
-    val state: String?
+    val state: String?,
+    @SerializedName("facets")
+    val facets: List<Facet?>?,
+    val selected: Boolean = false
 )

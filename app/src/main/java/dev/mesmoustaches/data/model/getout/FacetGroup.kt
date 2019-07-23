@@ -13,10 +13,10 @@ import java.util.*
 @Entity(tableName = "filters_group")
 data class FacetGroup(
     @SerializedName("facets")
-    @ColumnInfo(name="facets")
+    @ColumnInfo(name = "facets")
     val facets: List<Facet?>?,
     @SerializedName("name")
-    @ColumnInfo(name="name")
+    @ColumnInfo(name = "name")
     @PrimaryKey
     val name: String
 )

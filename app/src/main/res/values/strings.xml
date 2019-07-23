@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MesMoustachesDevSample</string>
+    <string name="price_type">Prix</string>
+    <string name="access_type">Type d\'accès</string>
+    <string name="deaf">Accessible aux malentendants</string>
+    <string name="blind">Accessible aux malvoyants</string>
+    <string name="pmr">Accessible aux personnes à mobilité réduite</string>
+    <string name="category">Catégorie</string>
+    <string name="unknown">Autres</string>
 </resources>

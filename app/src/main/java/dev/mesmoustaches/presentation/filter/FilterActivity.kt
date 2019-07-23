@@ -1,4 +1,4 @@
-package dev.mesmoustaches.presentation.home
+package dev.mesmoustaches.presentation.filter
 
 import android.content.Context
 import android.content.Intent
@@ -9,30 +9,25 @@ import androidx.lifecycle.nonNullObserveConsume
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
-import dev.mesmoustaches.presentation.routing.FilterScreen
-import kotlinx.android.synthetic.main.activity_home.*
-import org.koin.android.ext.android.inject
+import kotlinx.android.synthetic.main.activity_filter.*
+import kotlinx.android.synthetic.main.activity_home.loader
+import kotlinx.android.synthetic.main.activity_home.root
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class HomeActivity : AppCompatActivity() {
-    private val viewModel: HomeActivityViewModel by viewModel()
-    private val filterScreen by inject<FilterScreen>()
-
-    private val homeAdapter: HomeAdapter by lazy {
-        HomeAdapter {
-            viewModel.loadMore()
-        }
+class FilterActivity : AppCompatActivity() {
+    private val viewModel: FilterActivityViewModel by viewModel()
+    private val filterAdapter: FilterGroupAdapter by lazy {
+        FilterGroupAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_filter)
 
         setObservers()
-        setListeners()
 
-        homeRecyclerView.adapter = homeAdapter
+        filterRecyclerView.adapter = filterAdapter
     }
 
     private fun setObservers() {
@@ -42,30 +37,15 @@ class HomeActivity : AppCompatActivity() {
             Timber.e("Error: $it")
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
-
-        nonNullObserve(viewModel.eventsLiveData) {
-            homeAdapter.update(it)
-        }
-
         nonNullObserve(viewModel.filtersLiveData) {
             Timber.e("$it")
-        }
-    }
-
-    private fun setListeners() {
-        refresh?.setOnRefreshListener {
-            viewModel.refresh(forceUpdate = true)
-            refresh?.isRefreshing = false
-        }
-
-        fab?.setOnClickListener {
-            startActivity(filterScreen.getIntent())
+            filterAdapter.update(it)
         }
     }
 
     companion object {
         fun createIntent(context: Context): Intent {
-            return Intent(context, HomeActivity::class.java)
+            return Intent(context, FilterActivity::class.java)
         }
     }
 }

@@ -100,5 +100,5 @@ class HomeAdapter(val needMore: (Int) -> Unit) : RecyclerView.Adapter<GenericVie
 fun EventDomain.toCell() = HomeAdapter.Cell.DataCell(
     id = id,
     title = title,
-    date = dateText,
+    date = dateText.removeSuffix("<br />"),
     image = image)
