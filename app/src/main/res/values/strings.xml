@@ -7,4 +7,8 @@
     <string name="pmr">Accessible aux personnes à mobilité réduite</string>
     <string name="category">Catégorie</string>
     <string name="unknown">Autres</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="new_content">Nouveau contenu disponible</string>
+    <string name="accept">Charger ?</string>
 </resources>

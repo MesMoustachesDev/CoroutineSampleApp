@@ -12,9 +12,10 @@ import dev.mesmoustaches.android.view.GenericViewHolder
 import dev.mesmoustaches.domain.model.EventDomain
 import kotlinx.android.synthetic.main.item_event.view.*
 
-class HomeAdapter(val needMore: (Int) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
+class HomeAdapter(private val needMore: (Int) -> Unit,
+                  private val onItemClicked: (Cell) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
 
-    private var items = listOf<Cell>()
+    var items = listOf<Cell>()
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(items[position])
@@ -43,6 +44,9 @@ class HomeAdapter(val needMore: (Int) -> Unit) : RecyclerView.Adapter<GenericVie
                 .load(item.image)
                 .placeholder(R.drawable.logo)
                 .into(itemView.image)
+            itemView.setOnClickListener {
+                onItemClicked(item)
+            }
         }
     }
 

@@ -16,9 +16,9 @@ data class FacetGroup(
     @ColumnInfo(name = "facets")
     val facets: List<Facet?>?,
     @SerializedName("name")
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "path")
     @PrimaryKey
-    val name: String
+    val id: String
 )
 
 class FacetListConverter {

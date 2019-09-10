@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_gravity="center_vertical"

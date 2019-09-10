@@ -18,18 +18,18 @@ data class Fields(
     val blind: Int?,
     @SerializedName("category")
     val category: String?,
-    @SerializedName("contact_facebook")
-    val contactFacebook: String?,
     @SerializedName("contact_mail")
     val contactMail: String?,
     @SerializedName("contact_name")
     val contactName: String?,
-    @SerializedName("contact_phone")
-    val contactPhone: String?,
     @SerializedName("contact_url")
     val contactUrl: String?,
     @SerializedName("cover")
     val cover: Cover?,
+    @SerializedName("cover_alt")
+    val coverAlt: String?,
+    @SerializedName("cover_credit")
+    val coverCredit: String?,
     @SerializedName("cover_url")
     val coverUrl: String?,
     @SerializedName("date_description")
@@ -42,7 +42,7 @@ data class Fields(
     val deaf: Int?,
     @SerializedName("description")
     val description: String?,
-    @SerializedName("id")
+    @SerializedName("path")
     val id: String?,
     @SerializedName("lat_lon")
     val latLon: List<Double?>?,
@@ -52,6 +52,8 @@ data class Fields(
     val occurrences: String?,
     @SerializedName("pmr")
     val pmr: Int?,
+    @SerializedName("price_detail")
+    val priceDetail: String?,
     @SerializedName("price_type")
     val priceType: String?,
     @SerializedName("tags")

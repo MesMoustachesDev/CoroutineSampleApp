@@ -9,6 +9,7 @@ import androidx.lifecycle.nonNullObserveConsume
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
+import dev.mesmoustaches.presentation.details.EventDetailsActivity
 import dev.mesmoustaches.presentation.routing.FilterScreen
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.ext.android.inject
@@ -20,8 +21,10 @@ class HomeActivity : AppCompatActivity() {
     private val filterScreen by inject<FilterScreen>()
 
     private val homeAdapter: HomeAdapter by lazy {
-        HomeAdapter {
+        HomeAdapter({
             viewModel.loadMore()
+        }) {
+            startActivity(EventDetailsActivity.createIntent(this, it.id))
         }
     }
 
@@ -43,8 +46,16 @@ class HomeActivity : AppCompatActivity() {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
 
-        nonNullObserve(viewModel.eventsLiveData) {
-            homeAdapter.update(it)
+        nonNullObserve(viewModel.eventsLiveData) { list ->
+            if (true || homeAdapter.items.isEmpty()) {
+                homeAdapter.update(list)
+            } else {
+                val snack = Snackbar.make(root, R.string.new_content, Snackbar.LENGTH_INDEFINITE)
+                snack.setAction(R.string.accept) {
+                    homeAdapter.update(list)
+                }
+                snack.show()
+            }
         }
 
         nonNullObserve(viewModel.filtersLiveData) {

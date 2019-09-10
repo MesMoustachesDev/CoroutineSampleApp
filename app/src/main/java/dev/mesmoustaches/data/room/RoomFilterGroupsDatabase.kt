@@ -39,4 +39,8 @@ class RoomFilterGroupsDatabase(
     override fun queryList(specification: Specification): LiveData<List<FacetGroup>> =
         filtersDao
             .getFilterGroups()
+
+    override fun queryListNoLiveData(specification: Specification): List<FacetGroup> =
+        filtersDao
+            .getFilterGroupsNoLiveData()
 }

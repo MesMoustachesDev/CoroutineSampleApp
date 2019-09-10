@@ -15,7 +15,7 @@ interface FilterGroupsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addFilterGroupList(filters: List<FacetGroup>)
 
-    @Query("DELETE FROM filters_group WHERE name=:ref")
+    @Query("DELETE FROM filters_group WHERE path=:ref")
     fun removeFilterGroup(ref: String)
 
     @Query("DELETE FROM filters_group")
@@ -24,6 +24,9 @@ interface FilterGroupsDao {
     @Query("SELECT * from filters_group")
     fun getFilterGroups(): LiveData<List<FacetGroup>>
 
-    @Query("SELECT * from filters_group WHERE name = :ref")
+    @Query("SELECT * from filters_group WHERE path = :ref")
     fun getFilterGroupsWithRef(ref: String): LiveData<FacetGroup>
+
+    @Query("SELECT * from filters_group")
+    fun getFilterGroupsNoLiveData(): List<FacetGroup>
 }

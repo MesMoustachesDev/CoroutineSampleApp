@@ -1,6 +1,7 @@
 package dev.mesmoustaches.data.events.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import dev.mesmoustaches.data.common.CacheStrategy
 import dev.mesmoustaches.data.common.DataSource
 import dev.mesmoustaches.data.events.remote.ApiService
@@ -23,27 +24,53 @@ class EventRepositoryImpl(
     private var fetchRunning = false
 
     private val events = localDataSource.queryList(DataSource.Spec.All())
-    private val filters = filterDataSource.queryList(DataSource.Spec.All())
+    private val filters =  filterDataSource.queryList(DataSource.Spec.All())
 
-    override fun getEvents(): LiveData<List<RecordData>> {
-        return events
+    private val loading = MutableLiveData<Boolean>()
+
+    override fun getEvents(): LiveData<List<RecordData>> = events
+
+    override fun getLoading(): LiveData<Boolean> = loading
+
+    override fun getFilters(): LiveData<List<FacetGroup>> = filters
+
+    override suspend fun setFilters(filters: List<FacetGroup>) {
+        withContext(Dispatchers.IO) {
+            filterDataSource.remove(DataSource.Spec.All())
+            filterDataSource.add(filters)
+        }
     }
 
-    override fun getFilters(): LiveData<List<FacetGroup>> {
-        return filters
-    }
+    override suspend fun fetchEvents(
+        forceUpdate: Boolean,
+        loadMore: Boolean
+    ) {
+        loading.postValue(true)
 
-    override suspend fun fetchEvents(forceUpdate: Boolean,
-                                     loadMore: Boolean) {
         if (fetchRunning) return
         if (!cacheStrategy.isCacheValid() || forceUpdate || loadMore) {
             Timber.d("Loading from api")
             fetchRunning = true
             withContext(Dispatchers.IO) {
                 try {
+                    val filtersFromDB = filterDataSource.queryListNoLiveData(DataSource.Spec.All())
+                    val filterMap = HashMap<String, String>()
+                    filtersFromDB.let { filterList ->
+                        filterList.forEach { facetGroup ->
+                            if (facetGroup.facets != null) {
+                                val nonNullFacets = facetGroup.facets.filterNotNull()
+                                nonNullFacets
+                                    .filter { it.selected }
+                                    .forEach {
+                                        filterMap["refine.${facetGroup.id}"] = it.path
+                                    }
+                            }
+                        }
+                    }
                     val result = apiService.getEvents(
                         start = if (!loadMore) 0 else events.value?.size ?: 0,
-                        rows = 50
+                        rows = 50,
+                        refine = filterMap
                     )
                     if (!loadMore) {
                         localDataSource.remove(DataSource.Spec.All())
@@ -54,14 +81,16 @@ class EventRepositoryImpl(
                     }
 
                     result.facetGroups?.let {
-                        filterDataSource.remove(DataSource.Spec.All())
-                        filterDataSource.add(it.filterNotNull())
+                        // FIXME Dont remove existing filters
+                        if (filters.value == null) {
+                            filterDataSource.add(it.filterNotNull())
+                        }
                     }
-
 
                 } catch (error: Throwable) {
                     throw error
                 } finally {
+                    loading.postValue(false)
                     fetchRunning = false
                 }
             }
@@ -71,6 +100,7 @@ class EventRepositoryImpl(
     }
 
     override suspend fun fetchMoreEvents(start: Int, rows: Int) {
+        loading.postValue(true)
         if (fetchRunning) return
         Timber.d("Loading from api")
         fetchRunning = true
@@ -84,6 +114,7 @@ class EventRepositoryImpl(
             } catch (error: Throwable) {
                 throw error
             } finally {
+                loading.postValue(false)
                 fetchRunning = false
             }
         }

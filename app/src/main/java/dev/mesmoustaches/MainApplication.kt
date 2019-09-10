@@ -22,12 +22,13 @@ class MainApplication : Application() {
             // modules
 
             val appModules =
-                dataModules + presentationModules  + useCaseModules
+                dataModules + presentationModules + useCaseModules
             modules(appModules)
         }
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
         } else {
             //Do something
         }

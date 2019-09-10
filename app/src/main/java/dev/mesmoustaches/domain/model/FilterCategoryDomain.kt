@@ -4,7 +4,7 @@ import dev.mesmoustaches.R
 import dev.mesmoustaches.data.model.getout.FacetGroup
 
 data class FilterCategoryDomain(
-    val name: String,
+    val id: String,
     val nameToDisplay: Int,
     val filters: List<Filter>?
 )
@@ -12,7 +12,7 @@ data class FilterCategoryDomain(
 data class Filter(
     val name: String,
     val path: String,
-    val selected: Boolean,
+    var selected: Boolean,
     val type: FilterType
 )
 
@@ -23,14 +23,14 @@ sealed class FilterType {
 
 fun FacetGroup.toDomain(): FilterCategoryDomain {
     return FilterCategoryDomain(
-        name = name,
-        nameToDisplay = name.toDisplay(),
+        id = id,
+        nameToDisplay = id.toDisplay(),
         filters = facets?.map {
             Filter(
                 it?.name ?: "",
                 it?.path ?: "",
                 it?.selected ?: false,
-                if (it?.path?.toIntOrNull() == null) FilterType.ListFilter else FilterType.CheckBoxFilter
+                if (it?.name?.toIntOrNull() == null) FilterType.ListFilter else FilterType.CheckBoxFilter
             )
         }
     )

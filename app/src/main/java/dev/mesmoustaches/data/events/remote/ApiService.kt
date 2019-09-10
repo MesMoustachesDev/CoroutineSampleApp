@@ -3,6 +3,7 @@ package dev.mesmoustaches.data.events.remote
 import dev.mesmoustaches.data.model.getout.GetOutParis
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiService {
     @GET("search")
@@ -15,6 +16,7 @@ interface ApiService {
         @Query("facet") access_type: String = "access_type",
         @Query("facet") price_type: String = "price_type",
         @Query("rows") rows: Int = 50,
-        @Query("start") start: Int = 0
+        @Query("start") start: Int = 0,
+        @QueryMap refine: HashMap<String, String> = HashMap()
     ): GetOutParis
 }

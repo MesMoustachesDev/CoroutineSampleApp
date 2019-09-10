@@ -11,21 +11,21 @@ import kotlinx.coroutines.Job
 
 class HomeActivityViewModel(
     private val eventsLiveDataUseCase: GetEventsUseCase,
-    private val filterLiveDataUseCase: GetFiltersUseCase,
+    filterLiveDataUseCase: GetFiltersUseCase,
     context: Context
 ) : BaseViewModel(context) {
 
     private var localJob: Job? = null
     private var oldSize = -1
 
-    val loadingLiveData = MutableLiveData<Boolean>()
+    val loadingLiveData = eventsLiveDataUseCase.loading
     val errorLiveData = MutableLiveData<String>()
     val eventsLiveData =
         Transformations.map(eventsLiveDataUseCase.data) { list ->
             val arrayList: ArrayList<HomeAdapter.Cell> = ArrayList(list
                 .sortedBy { it.timeStamp }
                 .map { it.toCell() })
-            if (oldSize != list.size) {
+            if (oldSize != list.size && list.isNotEmpty()) {
                 oldSize = list.size
                 arrayList.add(HomeAdapter.Cell.NeedMore)
             }
@@ -41,7 +41,7 @@ class HomeActivityViewModel(
 
     fun refresh(forceUpdate: Boolean = false) {
         localJob = launchDataLoad(
-            loadingLiveData,
+            null,
             errorLiveData,
             getError
         ) {

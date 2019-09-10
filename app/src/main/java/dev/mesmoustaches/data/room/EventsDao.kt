@@ -26,4 +26,7 @@ interface EventsDao {
 
     @Query("SELECT * from events WHERE recordid = :ref")
     fun getEventsWithRef(ref: String): LiveData<RecordData>
+
+    @Query("SELECT * from events")
+    fun getEventsNoLiveData(): List<RecordData>
 }

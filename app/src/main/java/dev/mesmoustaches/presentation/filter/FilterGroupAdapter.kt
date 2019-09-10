@@ -9,9 +9,12 @@ import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.GenericViewHolder
 import dev.mesmoustaches.domain.model.Filter
 import dev.mesmoustaches.domain.model.FilterCategoryDomain
+import dev.mesmoustaches.domain.model.FilterType
+import kotlinx.android.synthetic.main.item_filter_checkbox.view.*
 import kotlinx.android.synthetic.main.item_filter_group.view.*
+import kotlinx.android.synthetic.main.item_filter_group.view.name
 
-class FilterGroupAdapter : RecyclerView.Adapter<GenericViewHolder>() {
+class FilterGroupAdapter(val onFilterChanged: (List<Cell>) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
 
     private var items = listOf<Cell>()
 
@@ -21,18 +24,23 @@ class FilterGroupAdapter : RecyclerView.Adapter<GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_filter_group,
+            viewType,
             parent,
             false
         )
-        return FilterViewHolder(view)
+        return when (viewType) {
+            R.layout.item_filter_group -> FilterViewHolder(view)
+            else -> CheckBoxFilterViewHolder(view)
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class FilterViewHolder(itemView: View) : GenericViewHolder(itemView) {
         private val adapter: FilterAdapter by lazy {
-            FilterAdapter()
+            FilterAdapter{
+                onFilterChanged(items)
+            }
         }
 
         init {
@@ -43,16 +51,42 @@ class FilterGroupAdapter : RecyclerView.Adapter<GenericViewHolder>() {
             val item = t as Cell
             itemView.name.setText(item.name)
 
-            item.filters?.map { it.toCell() }?.let {
+            item.filters?.let {
                 adapter.update(it)
             }
         }
     }
 
+    inner class CheckBoxFilterViewHolder(itemView: View) : GenericViewHolder(itemView) {
+        override fun <T> bind(t: T) {
+            val item = t as Cell
+            itemView.name.setText(item.name)
+            itemView.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.choice1 -> {
+                        t.filters?.get(0)?.selected = true
+                        t.filters?.get(1)?.selected = false
+                    }
+                    R.id.choice2 -> {
+                        t.filters?.get(0)?.selected = false
+                        t.filters?.get(1)?.selected = true
+                    }
+                }
+                onFilterChanged(items)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int = when (items[position].filters?.get(0)?.type) {
+        is FilterType.CheckBoxFilter -> R.layout.item_filter_checkbox
+        else -> R.layout.item_filter_group
+    }
+
     fun update(events: List<Cell>) {
         val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
         items = events
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
+        //diffResult.dispatchUpdatesTo(this)
     }
 
     class DiffCallback(
@@ -63,7 +97,7 @@ class FilterGroupAdapter : RecyclerView.Adapter<GenericViewHolder>() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val old = oldList[oldItemPosition]
             val new = newList[newItemPosition]
-            return (old.name == new.name)
+            return (old.id == new.id)
         }
 
         override fun getOldListSize(): Int = oldList.size
@@ -73,17 +107,29 @@ class FilterGroupAdapter : RecyclerView.Adapter<GenericViewHolder>() {
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val old = oldList[oldItemPosition]
             val new = newList[newItemPosition]
-            return (old.name == new.name)
+
+            var res = true
+
+            if (old.filters?.size != new.filters?.size) {
+                return false
+            } else {
+                old.filters?.forEachIndexed { index, filter ->
+                    res = res && (new.filters?.get(index)?.selected == filter.selected)
+                }
+            }
+            return res
         }
     }
 
     data class Cell(
+        val id: String,
         val name: Int,
         val filters: List<Filter>?
     )
 }
 
 fun FilterCategoryDomain.toCell() = FilterGroupAdapter.Cell(
+    id = id,
     name = nameToDisplay,
     filters = filters
 )

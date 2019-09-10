@@ -7,13 +7,9 @@ import dev.mesmoustaches.domain.model.EventDomain
 import dev.mesmoustaches.domain.model.toDomain
 import timber.log.Timber
 
-class GetEventsUseCase(
+class GetEventDetailsUseCase(
     private val eventRepository: EventRepository
-) : CoroutineUseCase<GetEventsUseCase.Params, List<EventDomain>>() {
-
-    val data = Transformations.map(eventRepository.getEvents()) { list ->
-        list.map { it.toDomain() }
-    }
+) : CoroutineUseCase<GetEventDetailsUseCase.Params, List<EventDomain>>() {
 
     val loading = eventRepository.getLoading()
 
@@ -21,8 +17,8 @@ class GetEventsUseCase(
         try {
             eventRepository
                 .fetchEvents(
-                    input?.forceUpdate ?: false,
-                    input?.loadMore ?: false
+                    false,
+                    loadMore = false
                 )
         } catch (e: Exception) {
             Timber.e(e, "Error getting employees")
@@ -30,8 +26,12 @@ class GetEventsUseCase(
         }
     }
 
+    fun getLiveData(id: String?) = Transformations.map(eventRepository.getEvents()) { list ->
+        val event = list.firstOrNull { it.recordid == id }
+        event?.toDomain() ?: EventDomain.NotFoundEvent()
+    }
+
     data class Params(
-        val forceUpdate: Boolean = false,
-        val loadMore: Boolean = false
+        val id: String
     )
 }

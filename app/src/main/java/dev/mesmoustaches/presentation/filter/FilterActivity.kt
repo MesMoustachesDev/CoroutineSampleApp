@@ -11,14 +11,16 @@ import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
 import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.activity_home.loader
-import kotlinx.android.synthetic.main.activity_home.root
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class FilterActivity : AppCompatActivity() {
     private val viewModel: FilterActivityViewModel by viewModel()
     private val filterAdapter: FilterGroupAdapter by lazy {
-        FilterGroupAdapter()
+        FilterGroupAdapter{
+            Timber.d("onChanged: $it")
+            viewModel.updateFilters(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +40,9 @@ class FilterActivity : AppCompatActivity() {
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
         }
         nonNullObserve(viewModel.filtersLiveData) {
-            Timber.e("$it")
-            filterAdapter.update(it)
+            if (it.isNotEmpty()) {
+                filterAdapter.update(it)
+            }
         }
     }
 

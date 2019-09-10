@@ -39,4 +39,8 @@ class RoomEventsDatabase(
     override fun queryList(specification: Specification): LiveData<List<RecordData>> =
         eventDao
             .getEvents()
+
+    override fun queryListNoLiveData(specification: Specification): List<RecordData> =
+        eventDao
+            .getEventsNoLiveData()
 }

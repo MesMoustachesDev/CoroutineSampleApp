@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2006 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2006 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,59 +12,63 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:minHeight="200dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <ImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:gravity="center"
-                android:background="@color/semi_black"
-                android:textStyle="bold"
-                android:textColor="@color/white"
                 android:layout_gravity="center_vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:background="@color/semi_black"
+                android:gravity="center"
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingTop="8dp"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:paddingBottom="8dp"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="test"/>
+                tools:text="test" />
+
         <TextView
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/semi_black"
-                android:textColor="@color/white"
-                android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:layout_gravity="center_vertical"
+                android:background="@color/semi_black"
+                android:gravity="center"
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingTop="8dp"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:paddingBottom="8dp"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/white"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="test"/>
+                tools:text="test" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

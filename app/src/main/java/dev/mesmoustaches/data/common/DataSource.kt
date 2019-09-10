@@ -10,6 +10,7 @@ interface DataSource<T> {
     fun remove(specification: Specification)
     fun queryId(specification: String): LiveData<T>
     fun queryList(specification: Specification): LiveData<List<T>>
+    fun queryListNoLiveData(specification: Specification): List<T>
 
     class Spec : Specification {
         data class ByRef(val id: String) : Specification
