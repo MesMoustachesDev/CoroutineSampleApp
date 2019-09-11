@@ -45,10 +45,9 @@ class EventRepositoryImpl(
         forceUpdate: Boolean,
         loadMore: Boolean
     ) {
-        loading.postValue(true)
-
         if (fetchRunning) return
         if (!cacheStrategy.isCacheValid() || forceUpdate || loadMore) {
+            loading.postValue(true)
             Timber.d("Loading from api")
             fetchRunning = true
             withContext(Dispatchers.IO) {

@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.nonNullObserve
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.nonNullObserveConsume
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
-import dev.mesmoustaches.domain.model.EventDomain
+import dev.mesmoustaches.databinding.ActivityEventDetailsBinding
 import kotlinx.android.synthetic.main.activity_event_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class EventDetailsActivity : AppCompatActivity() {
     private val viewModel: EventDetailsActivityViewModel by viewModel()
@@ -21,22 +21,18 @@ class EventDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_details)
-
+        val binding: ActivityEventDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_event_details)
+        binding.event = viewModel
+        binding.lifecycleOwner = this
         setObservers()
     }
 
     private fun setObservers() {
+        viewModel.getLiveData(extractId(intent))
 
         nonNullObserveConsume(viewModel.errorLiveData) {
             Timber.e("Error: $it")
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
-        }
-
-        nonNullObserve(viewModel.getLiveData(extractId(intent))) { event: EventDomain ->
-            Glide.with(this)
-                .load(event.image)
-                .placeholder(R.drawable.logo)
-                .into(eventDetailsMainImage)
         }
     }
 
