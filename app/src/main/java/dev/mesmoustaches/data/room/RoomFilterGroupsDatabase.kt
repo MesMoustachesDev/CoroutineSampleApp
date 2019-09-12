@@ -8,6 +8,9 @@ import dev.mesmoustaches.data.model.getout.FacetGroup
 class RoomFilterGroupsDatabase(
     private val filtersDao: FilterGroupsDao
 ) : FiltersDataSource {
+    override fun updateAndAdd(items: Iterable<FacetGroup>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun add(item: FacetGroup) {
         filtersDao.addFilterGroup(item)

@@ -1,9 +1,11 @@
 package dev.mesmoustaches.presentation.home
 
 import android.content.Context
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.launchDataLoad
+import dev.mesmoustaches.domain.model.FilterCategoryDomain
 import dev.mesmoustaches.domain.usecase.GetEventsUseCase
 import dev.mesmoustaches.domain.usecase.GetFiltersUseCase
 import dev.mesmoustaches.presentation.common.BaseViewModel
@@ -32,14 +34,20 @@ class HomeActivityViewModel(
             arrayList
         }
 
-    val filtersLiveData = filterLiveDataUseCase.data
+    val filtersLiveData = MediatorLiveData<List<FilterCategoryDomain>>()
 
     init {
         oldSize = -1
         refresh()
+
+        filtersLiveData.addSource(filterLiveDataUseCase.data) {
+            oldSize = -1
+            refresh(true)
+            filtersLiveData.postValue(it)
+        }
     }
 
-    fun refresh(forceUpdate: Boolean = false) {
+    private fun refresh(forceUpdate: Boolean = false) {
         localJob = launchDataLoad(
             null,
             errorLiveData,

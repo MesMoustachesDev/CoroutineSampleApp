@@ -2,6 +2,7 @@ package dev.mesmoustaches.presentation.details
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,13 +18,14 @@ import timber.log.Timber
 class EventDetailsActivity : AppCompatActivity() {
     private val viewModel: EventDetailsActivityViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_details)
-        val binding: ActivityEventDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_event_details)
+        val binding: ActivityEventDetailsBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_event_details)
         binding.event = viewModel
         binding.lifecycleOwner = this
+
         setObservers()
     }
 
@@ -33,6 +35,21 @@ class EventDetailsActivity : AppCompatActivity() {
         nonNullObserveConsume(viewModel.errorLiveData) {
             Timber.e("Error: $it")
             Snackbar.make(root, it, Snackbar.LENGTH_SHORT).show()
+        }
+
+        nonNullObserveConsume(viewModel.openMapLiveData) { coordinates: Pair<Double, Double> ->
+            onMap(coordinates)
+        }
+    }
+
+    private fun onMap(coordinates: Pair<Double?, Double?>?) {
+        coordinates?.let {
+            val gmmIntentUri = Uri.parse("http://maps.google.com/maps?q=loc:${coordinates.first},${coordinates.second}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(packageManager) != null) {
+                startActivity(mapIntent)
+            }
         }
     }
 

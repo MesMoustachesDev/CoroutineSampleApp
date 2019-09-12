@@ -23,10 +23,10 @@ class SetFiltersUseCase(
         runBlocking {
             eventRepository.setFilters(filterData)
         }
-        eventRepository
-            .fetchEvents(
-                forceUpdate = true,
-                loadMore = false
-            )
+//        eventRepository
+//            .fetchEvents(
+//                forceUpdate = true,
+//                loadMore = false
+//            )
     }
 }

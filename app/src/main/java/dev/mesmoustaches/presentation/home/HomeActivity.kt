@@ -35,6 +35,7 @@ class HomeActivity : AppCompatActivity() {
         setObservers()
         setListeners()
 
+        homeAdapter.setHasStableIds(true)
         homeRecyclerView.adapter = homeAdapter
     }
 
@@ -64,11 +65,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        refresh?.setOnRefreshListener {
-            viewModel.refresh(forceUpdate = true)
-            refresh?.isRefreshing = false
-        }
-
         fab?.setOnClickListener {
             startActivity(filterScreen.getIntent())
         }

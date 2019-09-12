@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,51 +9,50 @@
                 type="dev.mesmoustaches.presentation.details.EventDetailsActivityViewModel" />
 
         <variable
-                name="id"
-                type="String" />
-
+                name="activity"
+                type="dev.mesmoustaches.presentation.details.EventDetailsActivity" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/root"
+    <androidx.constraintlayout.motion.widget.MotionLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="@string/app_name">
-
-                <ProgressBar
-                        android:id="@+id/loader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|end"
-                        android:progressTint="@color/white"
-                        android:visibility="gone" />
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="match_parent"
+            app:layoutDescription="@xml/scroll_motion">
 
         <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/eventDetailsMainImage"
+                android:id="@+id/motionLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:imageUrl="@{event.imageLiveData}"
-                app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+                android:layout_height="300dp"
+                android:elevation="15dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{event.imageLiveData}" />
+
+        <!--        </androidx.constraintlayout.motion.widget.MotionLayout>-->
+
+        <androidx.core.widget.NestedScrollView
+                android:id="@+id/root"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/motionLayout">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eventDetailsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:htmlText="@{event.descriptionLiveData}" />
+
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_filter" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                android:src="@drawable/ic_map"
+                android:onClick="@{() -> event.onMapClicked()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

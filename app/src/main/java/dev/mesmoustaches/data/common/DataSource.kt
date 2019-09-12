@@ -6,6 +6,7 @@ interface DataSource<T> {
     fun add(item: T)
     fun add(items: Iterable<T>)
     fun update(item: T)
+    fun updateAndAdd(items: Iterable<T>)
     fun remove(item: T)
     fun remove(specification: Specification)
     fun queryId(specification: String): LiveData<T>

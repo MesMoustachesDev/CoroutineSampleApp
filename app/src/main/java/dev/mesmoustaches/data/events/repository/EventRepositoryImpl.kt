@@ -72,16 +72,20 @@ class EventRepositoryImpl(
                         refine = filterMap
                     )
                     if (!loadMore) {
-                        localDataSource.remove(DataSource.Spec.All())
-                    }
-                    result.records?.let {
-                        localDataSource.add(it.filterNotNull())
-                        cacheStrategy.newCacheSet()
+                        result.records?.let {
+                            localDataSource.updateAndAdd(it.filterNotNull())
+                        }
+//                        localDataSource.remove(DataSource.Spec.All())
+                    } else {
+                        result.records?.let {
+                            localDataSource.add(it.filterNotNull())
+                            cacheStrategy.newCacheSet()
+                        }
                     }
 
                     result.facetGroups?.let {
                         // FIXME Dont remove existing filters
-                        if (filters.value == null) {
+                        if (filters.value == null || filters.value?.isEmpty() == true) {
                             filterDataSource.add(it.filterNotNull())
                         }
                     }

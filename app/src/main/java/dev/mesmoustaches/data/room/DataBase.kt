@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.mesmoustaches.data.model.getout.*
 
-@Database(entities = [RecordData::class, FacetGroup::class], version = 2, exportSchema = false)
+@Database(entities = [RecordData::class, FacetGroup::class], version = 3, exportSchema = false)
 
 @TypeConverters(
     FieldConverter::class,

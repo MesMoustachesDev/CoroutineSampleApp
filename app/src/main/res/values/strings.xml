@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MesMoustachesDevSample</string>
+    <string name="app_name">Que faire à Paris ?</string>
     <string name="price_type">Prix</string>
     <string name="access_type">Type d\'accès</string>
     <string name="deaf">Accessible aux malentendants</string>

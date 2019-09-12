@@ -10,6 +10,7 @@ sealed class EventDomain {
     abstract val timeStamp: Long
     abstract val dateText: String
     abstract val image: String?
+    abstract val position: Pair<Double, Double>?
 
     data class EventDomainData(
         override val id: String,
@@ -17,7 +18,8 @@ sealed class EventDomain {
         override val description: String,
         override val timeStamp: Long,
         override val dateText: String,
-        override val image: String?
+        override val image: String?,
+        override val position: Pair<Double, Double>?
     ): EventDomain()
 
     data class NotFoundEvent(
@@ -26,7 +28,8 @@ sealed class EventDomain {
         override val description: String = "not found",
         override val timeStamp: Long = -1,
         override val dateText: String = "not found",
-        override val image: Nothing? = null
+        override val image: Nothing? = null,
+        override val position: Pair<Double, Double> ?= null
     ): EventDomain()
 }
 
@@ -40,6 +43,7 @@ fun RecordData.toDomain(): EventDomain {
         description = fields?.description ?: "",
         timeStamp = sdf.parse(recordTimestamp).time,
         dateText = fields?.dateDescription ?: "",
-        image = fields?.coverUrl
+        image = fields?.coverUrl,
+        position = (geometry?.coordinates?.get(1) ?: 0.0) to (geometry?.coordinates?.get(0) ?: 0.0)
     )
 }

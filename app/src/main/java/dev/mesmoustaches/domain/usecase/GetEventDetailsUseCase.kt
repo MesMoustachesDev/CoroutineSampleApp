@@ -11,8 +11,6 @@ class GetEventDetailsUseCase(
     private val eventRepository: EventRepository
 ) : CoroutineUseCase<GetEventDetailsUseCase.Params, List<EventDomain>>() {
 
-    val loading = eventRepository.getLoading()
-
     override suspend fun createCoroutine(input: Params?) {
         try {
             eventRepository

@@ -1,10 +1,7 @@
 package dev.mesmoustaches.data.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import dev.mesmoustaches.data.model.getout.RecordData
 
 @Dao
@@ -29,4 +26,10 @@ interface EventsDao {
 
     @Query("SELECT * from events")
     fun getEventsNoLiveData(): List<RecordData>
+
+    @Transaction
+    fun clearAndAdd(employees: List<RecordData>) {
+        clearEventList()
+        addEventList(employees)
+    }
 }

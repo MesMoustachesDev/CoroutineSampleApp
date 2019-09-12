@@ -16,11 +16,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_margin="8dp"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center_vertical"
-        android:minHeight="200dp">
+        android:gravity="center_vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,13 +28,14 @@
         <ImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/logo"/>
 
         <TextView
                 android:id="@+id/name"

@@ -12,14 +12,26 @@ class EventDetailsActivityViewModel(
     context: Context
 ) : BaseViewModel(context) {
 
-    val loadingLiveData = eventsLiveDataUseCase.loading
     val errorLiveData = MutableLiveData<String>()
-    var imageLiveData: LiveData<String?> ?= null
+
+    lateinit var imageLiveData: LiveData<String>
+    lateinit var descriptionLiveData: LiveData<String>
+    private var coordinates: Pair<Double, Double>? = null
+
+    val openMapLiveData = MutableLiveData<Pair<Double, Double>>()
 
     fun getLiveData(extractId: String?) {
         val liveData = eventsLiveDataUseCase.getLiveData(extractId)
         imageLiveData = Transformations.map(liveData) {
+            coordinates = it.position
             it.image
         }
+        descriptionLiveData = Transformations.map(liveData) {
+            it.description
+        }
+    }
+
+    fun onMapClicked() {
+        openMapLiveData.postValue(coordinates)
     }
 }

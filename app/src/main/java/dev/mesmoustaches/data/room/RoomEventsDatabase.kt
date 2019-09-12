@@ -17,6 +17,10 @@ class RoomEventsDatabase(
         eventDao.addEventList(items.toList())
     }
 
+    override fun updateAndAdd(items: Iterable<RecordData>) {
+        eventDao.clearAndAdd(items.toList())
+    }
+
     override fun update(item: RecordData) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

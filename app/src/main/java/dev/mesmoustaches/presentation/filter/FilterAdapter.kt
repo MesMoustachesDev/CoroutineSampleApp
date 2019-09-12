@@ -53,10 +53,10 @@ class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<Gene
     }
 
     fun update(events: List<Filter>) {
-        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
+//        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
         items = events
-        diffResult.dispatchUpdatesTo(this)
-//        notifyDataSetChanged()
+//        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class DiffCallback(

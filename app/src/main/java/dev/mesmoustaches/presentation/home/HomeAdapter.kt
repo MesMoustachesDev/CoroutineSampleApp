@@ -33,6 +33,8 @@ class HomeAdapter(private val needMore: (Int) -> Unit,
         }
     }
 
+    override fun getItemId(position: Int): Long = items[position].id.hashCode().toLong()
+
     override fun getItemCount(): Int = items.size
 
     inner class EventViewHolder(itemView: View) : GenericViewHolder(itemView) {
@@ -78,9 +80,7 @@ class HomeAdapter(private val needMore: (Int) -> Unit,
         override fun getNewListSize(): Int = newList.size
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldList[oldItemPosition]
-            val new = newList[newItemPosition]
-            return (old is Cell.DataCell && new is Cell.DataCell && old.title == new.title)
+            return true
         }
     }
 

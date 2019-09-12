@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -11,38 +11,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
+        <Toolbar
                 android:id="@+id/toolbar"
-                app:title="@string/app_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <ProgressBar
+                android:layout_height="wrap_content"
+                android:theme="@style/ToolbarTheme"
+                android:title="@string/app_name">
+
+            <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/loader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:progressTint="@color/white"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_vertical|end"
-                    android:visibility="gone"/>
-        </androidx.appcompat.widget.Toolbar>
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/loader"
+                    tools:visibility="visible" />
+        </Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refresh"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_filter"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_filter" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
