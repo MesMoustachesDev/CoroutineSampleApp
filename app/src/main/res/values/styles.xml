@@ -7,12 +7,28 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="toolbarStyle">@style/ToolbarTheme</item>
+        <item name="android:textColor">@color/semi_black</item>
+        <item name="android:textColorLink">@color/colorPrimaryDark</item>
+        <item name="colorOnSecondary">@color/titleToolBarColor</item>
     </style>
 
     <style name="AppTheme.Full">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="ToolbarTheme" parent="Theme.MaterialComponents"/>
+    <style name="ToolbarTheme" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/titleToolBarColor</item>
+    </style>
+
+    <style name="TextOnDark" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/textColorOnDark</item>
+        <item name="android:background">@color/backgroundColorOnDark</item>
+    </style>
+
+    <style name="TextOnDark.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>

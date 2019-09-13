@@ -16,13 +16,9 @@
                 app:title="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <ProgressBar
-                    android:id="@+id/loader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:progressTint="@color/white"
-                    android:layout_gravity="center_vertical|end"
-                    android:visibility="gone"/>
+
+            <include layout="@layout/main_progress_bar"/>
+
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -10,7 +10,6 @@ import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
 import kotlinx.android.synthetic.main.activity_filter.*
-import kotlinx.android.synthetic.main.activity_home.loader
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 

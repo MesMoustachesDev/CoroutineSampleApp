@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.view.setTextViewHTML
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.textview.MaterialTextView
 
 
 @BindingAdapter("imageUrl")
@@ -19,7 +19,7 @@ fun AppCompatImageView.loadImage(imageUrl: String?) {
 }
 
 @BindingAdapter("htmlText")
-fun AppCompatTextView.bindHtml(html: String?) {
+fun MaterialTextView.bindHtml(html: String?) {
     html?.let {
         this.setTextViewHTML(html) {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))

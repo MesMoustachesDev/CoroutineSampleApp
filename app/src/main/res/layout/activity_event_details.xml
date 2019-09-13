@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -26,31 +27,33 @@
                 android:scaleType="centerCrop"
                 app:imageUrl="@{event.imageLiveData}" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/background"
                 android:gravity="center"
                 android:paddingStart="24dp"
                 android:paddingTop="40dp"
-                android:paddingBottom="24dp"
                 android:paddingEnd="24dp"
+                android:paddingBottom="8dp"
                 android:text="@{event.titleLiveData}"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/motionLayout" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/background"
                 android:gravity="center"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
                 android:text="@{event.addressLiveData}"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:text="paris" />
 
         <!--        </androidx.constraintlayout.motion.widget.MotionLayout>-->
 
@@ -58,12 +61,12 @@
                 android:id="@+id/root"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/white"
+                android:background="@color/background"
                 android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/address">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/eventDetailsDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,9 +101,8 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/facebookImage"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/facebookImage"
-                    app:layout_constraintTop_toTopOf="@id/facebookImage"
                     app:srcCompat="@drawable/ic_phone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -108,13 +110,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:foregroundTint="@color/white"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/phoneImage"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/phoneImage"
-                    app:layout_constraintTop_toTopOf="@id/phoneImage"
                     app:srcCompat="@drawable/ic_mail" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

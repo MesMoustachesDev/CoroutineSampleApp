@@ -12,6 +12,7 @@ import dev.mesmoustaches.android.view.linkVisibilityTo
 import dev.mesmoustaches.presentation.details.EventDetailsActivity
 import dev.mesmoustaches.presentation.routing.FilterScreen
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.main_progress_bar.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -40,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        loader.linkVisibilityTo(viewModel.loadingLiveData, this)
+        loader?.linkVisibilityTo(viewModel.loadingLiveData, this)
 
         nonNullObserveConsume(viewModel.errorLiveData) {
             Timber.e("Error: $it")

@@ -11,25 +11,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/ToolbarTheme"
-                android:title="@string/app_name">
+                app:title="@string/app_name">
 
-            <com.airbnb.lottie.LottieAnimationView
+            <include
                     android:id="@+id/loader"
+                    layout="@layout/main_progress_bar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical|end"
-                    android:visibility="gone"
                     android:layout_marginEnd="8dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/loader"
+                    android:visibility="gone"
                     tools:visibility="visible" />
-        </Toolbar>
+
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
