@@ -16,6 +16,13 @@ class EventDetailsActivityViewModel(
 
     lateinit var imageLiveData: LiveData<String>
     lateinit var descriptionLiveData: LiveData<String>
+    lateinit var titleLiveData: LiveData<String>
+    lateinit var addressLiveData: LiveData<String>
+
+    lateinit var facebookLiveData: LiveData<String>
+    lateinit var phoneLiveData: LiveData<String>
+    lateinit var mailLiveData: LiveData<String>
+
     private var coordinates: Pair<Double, Double>? = null
 
     val openMapLiveData = MutableLiveData<Pair<Double, Double>>()
@@ -28,6 +35,24 @@ class EventDetailsActivityViewModel(
         }
         descriptionLiveData = Transformations.map(liveData) {
             it.description
+        }
+        titleLiveData = Transformations.map(liveData) {
+            it.title
+        }
+        addressLiveData = Transformations.map(liveData) {
+            it.address
+        }
+
+        facebookLiveData = Transformations.map(liveData) {
+            it.facebook
+        }
+
+        phoneLiveData = Transformations.map(liveData) {
+            it.phone
+        }
+
+        mailLiveData = Transformations.map(liveData) {
+            it.mail
         }
     }
 

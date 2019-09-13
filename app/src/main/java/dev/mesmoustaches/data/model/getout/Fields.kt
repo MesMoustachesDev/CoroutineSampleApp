@@ -24,6 +24,10 @@ data class Fields(
     val contactName: String?,
     @SerializedName("contact_url")
     val contactUrl: String?,
+    @SerializedName("contact_phone")
+    val contactPhone: String?,
+    @SerializedName("contact_facebook")
+    val contactFacebook: String?,
     @SerializedName("cover")
     val cover: Cover?,
     @SerializedName("cover_alt")

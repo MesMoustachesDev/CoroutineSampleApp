@@ -10,7 +10,11 @@ sealed class EventDomain {
     abstract val timeStamp: Long
     abstract val dateText: String
     abstract val image: String?
+    abstract val address: String?
     abstract val position: Pair<Double, Double>?
+    abstract val phone: String?
+    abstract val mail: String?
+    abstract val facebook: String?
 
     data class EventDomainData(
         override val id: String,
@@ -19,7 +23,11 @@ sealed class EventDomain {
         override val timeStamp: Long,
         override val dateText: String,
         override val image: String?,
-        override val position: Pair<Double, Double>?
+        override val address: String?,
+        override val position: Pair<Double, Double>?,
+        override val phone: String?,
+        override val mail: String?,
+        override val facebook: String?
     ): EventDomain()
 
     data class NotFoundEvent(
@@ -29,7 +37,11 @@ sealed class EventDomain {
         override val timeStamp: Long = -1,
         override val dateText: String = "not found",
         override val image: Nothing? = null,
-        override val position: Pair<Double, Double> ?= null
+        override val address: String? = null,
+        override val position: Pair<Double, Double> ?= null,
+        override val phone: String? = null,
+        override val mail: String? = null,
+        override val facebook: String? = null
     ): EventDomain()
 }
 
@@ -44,6 +56,10 @@ fun RecordData.toDomain(): EventDomain {
         timeStamp = sdf.parse(recordTimestamp).time,
         dateText = fields?.dateDescription ?: "",
         image = fields?.coverUrl,
-        position = (geometry?.coordinates?.get(1) ?: 0.0) to (geometry?.coordinates?.get(0) ?: 0.0)
+        address = "${fields?.addressStreet}\n${fields?.addressZipcode} ${fields?.addressCity}",
+        position = (geometry?.coordinates?.get(1) ?: 0.0) to (geometry?.coordinates?.get(0) ?: 0.0),
+        phone = fields?.contactPhone,
+        mail = fields?.contactMail,
+        facebook = fields?.contactFacebook
     )
 }

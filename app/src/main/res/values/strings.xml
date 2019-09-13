@@ -11,4 +11,5 @@
     <string name="no">Non</string>
     <string name="new_content">Nouveau contenu disponible</string>
     <string name="accept">Charger ?</string>
+    <string name="send_email">Envoyer un mail</string>
 </resources>

@@ -26,15 +26,42 @@
                 android:scaleType="centerCrop"
                 app:imageUrl="@{event.imageLiveData}" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingStart="24dp"
+                android:paddingTop="40dp"
+                android:paddingBottom="24dp"
+                android:paddingEnd="24dp"
+                android:text="@{event.titleLiveData}"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/motionLayout" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@{event.addressLiveData}"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
         <!--        </androidx.constraintlayout.motion.widget.MotionLayout>-->
 
         <androidx.core.widget.NestedScrollView
                 android:id="@+id/root"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/motionLayout">
+                app:layout_constraintTop_toBottomOf="@id/address">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/eventDetailsDescription"
@@ -45,13 +72,59 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contactsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/facebookImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/facebook" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/phoneImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/facebookImage"
+                    app:layout_constraintStart_toEndOf="@id/facebookImage"
+                    app:layout_constraintTop_toTopOf="@id/facebookImage"
+                    app:srcCompat="@drawable/ic_phone" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/mailImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:foregroundTint="@color/white"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/phoneImage"
+                    app:layout_constraintStart_toEndOf="@id/phoneImage"
+                    app:layout_constraintTop_toTopOf="@id/phoneImage"
+                    app:srcCompat="@drawable/ic_mail" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_map"
                 android:onClick="@{() -> event.onMapClicked()}"
+                android:src="@drawable/ic_map"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     motion:layout_constraintBottom_toBottomOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@id/motionLayout" />
+                    motion:layout_constraintTop_toBottomOf="@id/address" />
 
             <Constaint
                     android:id="@+id/eventDetailsDescription"
@@ -42,18 +42,62 @@
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:translationY="0dp"
                     motion:layout_constraintBottom_toBottomOf="parent"
                     motion:layout_constraintEnd_toEndOf="parent" />
+
+            <Constraint
+                    android:id="@+id/contactsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:translationY="0dp"
+                    motion:layout_constraintBottom_toBottomOf="parent" />
+
+            <Constraint
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:paddingStart="24dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp"
+                    android:paddingEnd="24dp"
+                    motion:layout_constraintTop_toBottomOf="@+id/motionLayout">
+                <CustomAttribute
+                        motion:attributeName="backgroundColor"
+                        motion:customColorValue="@color/white" />
+
+                <CustomAttribute
+                        motion:attributeName="textColor"
+                        motion:customColorValue="@color/black" />
+            </Constraint>
+
+            <Constraint
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    motion:layout_constraintTop_toBottomOf="@+id/title">
+                <CustomAttribute
+                        motion:attributeName="backgroundColor"
+                        motion:customColorValue="@color/white" />
+
+                <CustomAttribute
+                        motion:attributeName="textColor"
+                        motion:customColorValue="@color/black" />
+            </Constraint>
         </ConstraintSet>
 
         <ConstraintSet android:id="@+id/end">
             <Constraint
                     android:id="@+id/motionLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="0.01dp"
                     android:scaleX="1"
                     android:scaleY="1"
                     android:visibility="invisible"
@@ -64,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     motion:layout_constraintBottom_toBottomOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@id/motionLayout" />
+                    motion:layout_constraintTop_toBottomOf="@id/address" />
 
             <Constaint
                     android:id="@id/eventDetailsDescription"
@@ -79,11 +123,55 @@
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:translationY="100dp"
                     motion:layout_constraintBottom_toBottomOf="parent"
                     motion:layout_constraintEnd_toEndOf="parent" />
+
+            <Constraint
+                    android:id="@+id/contactsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:translationY="100dp"
+                    motion:layout_constraintBottom_toBottomOf="parent" />
+
+            <Constraint
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:paddingStart="24dp"
+                    android:paddingTop="40dp"
+                    android:paddingBottom="24dp"
+                    android:paddingEnd="24dp"
+                    motion:layout_constraintTop_toBottomOf="@+id/motionLayout">
+                <CustomAttribute
+                        motion:attributeName="backgroundColor"
+                        motion:customColorValue="@color/colorPrimary" />
+                <CustomAttribute
+                        motion:attributeName="textColor"
+                        motion:customColorValue="@color/white" />
+
+            </Constraint>
+
+            <Constraint
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    motion:layout_constraintTop_toBottomOf="@+id/title">
+                <CustomAttribute
+                        motion:attributeName="backgroundColor"
+                        motion:customColorValue="@color/colorPrimary" />
+                <CustomAttribute
+                        motion:attributeName="textColor"
+                        motion:customColorValue="@color/white" />
+            </Constraint>
+
         </ConstraintSet>
     </Transition>
 
