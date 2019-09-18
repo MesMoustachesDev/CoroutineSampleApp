@@ -8,8 +8,8 @@ import dev.mesmoustaches.data.model.getout.FacetGroup
 class RoomFilterGroupsDatabase(
     private val filtersDao: FilterGroupsDao
 ) : FiltersDataSource {
-    override fun updateAndAdd(items: Iterable<FacetGroup>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun updateAndAdd(items: Iterable<FacetGroup>) {
+        filtersDao.clearAndAdd(items.toList())
     }
 
     override fun add(item: FacetGroup) {
@@ -43,7 +43,7 @@ class RoomFilterGroupsDatabase(
         filtersDao
             .getFilterGroups()
 
-    override fun queryListNoLiveData(specification: Specification): List<FacetGroup> =
+    override suspend fun queryListNoLiveData(specification: Specification): List<FacetGroup> =
         filtersDao
             .getFilterGroupsNoLiveData()
 }

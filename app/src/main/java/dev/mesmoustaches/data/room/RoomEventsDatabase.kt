@@ -17,7 +17,7 @@ class RoomEventsDatabase(
         eventDao.addEventList(items.toList())
     }
 
-    override fun updateAndAdd(items: Iterable<RecordData>) {
+    override suspend fun updateAndAdd(items: Iterable<RecordData>) {
         eventDao.clearAndAdd(items.toList())
     }
 
@@ -44,7 +44,7 @@ class RoomEventsDatabase(
         eventDao
             .getEvents()
 
-    override fun queryListNoLiveData(specification: Specification): List<RecordData> =
+    override suspend fun queryListNoLiveData(specification: Specification): List<RecordData> =
         eventDao
             .getEventsNoLiveData()
 }

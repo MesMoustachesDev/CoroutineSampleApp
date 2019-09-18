@@ -52,7 +52,7 @@ fun RecordData.toDomain(): EventDomain {
     return EventDomain.EventDomainData(
         id = recordid,
         title = fields?.title ?: "",
-        description = fields?.description ?: "",
+        description = "${fields?.description ?: ""} <br/><br/><br/>${fields?.priceDetail ?: ""} <br/><br/><br/>${fields?.contactUrl?.toLinkBalise() ?: ""} ",
         timeStamp = sdf.parse(recordTimestamp).time,
         dateText = fields?.dateDescription ?: "",
         image = fields?.coverUrl,
@@ -63,3 +63,5 @@ fun RecordData.toDomain(): EventDomain {
         facebook = fields?.contactFacebook
     )
 }
+
+fun String.toLinkBalise() = "<a href=\"$this\">Website</a>"

@@ -83,7 +83,7 @@ class FilterGroupAdapter(val onFilterChanged: (List<Cell>) -> Unit) : RecyclerVi
     }
 
     fun update(events: List<Cell>) {
-        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
+//        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
         items = events
         notifyDataSetChanged()
         //diffResult.dispatchUpdatesTo(this)

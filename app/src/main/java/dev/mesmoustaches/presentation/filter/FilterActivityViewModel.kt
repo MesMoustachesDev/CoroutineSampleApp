@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.launchDataLoad
 import dev.mesmoustaches.domain.model.FilterCategoryDomain
+import dev.mesmoustaches.domain.usecase.GetEventsUseCase
 import dev.mesmoustaches.domain.usecase.GetFiltersUseCase
 import dev.mesmoustaches.domain.usecase.SetFiltersUseCase
 import dev.mesmoustaches.presentation.common.BaseViewModel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Job
 class FilterActivityViewModel(
     filterLiveDataUseCase: GetFiltersUseCase,
     private val setFilterLiveDataUseCase: SetFiltersUseCase,
+    private val getEventsUseCase: GetEventsUseCase,
     context: Context
 ) : BaseViewModel(context) {
     private var localJob: Job? = null
@@ -25,7 +27,6 @@ class FilterActivityViewModel(
         }
 
     fun updateFilters(filters: List<FilterGroupAdapter.Cell>) {
-        localJob?.cancel()
         localJob = launchDataLoad(
             null,
             errorLiveData,
@@ -38,6 +39,7 @@ class FilterActivityViewModel(
                     filters = it.filters
                 )
             })
+//            getEventsUseCase.execute(GetEventsUseCase.Params(forceUpdate = true))
         }
     }
 

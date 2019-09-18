@@ -25,12 +25,11 @@ class HomeActivityViewModel(
     val eventsLiveData =
         Transformations.map(eventsLiveDataUseCase.data) { list ->
             val arrayList: ArrayList<HomeAdapter.Cell> = ArrayList(list
-                .sortedBy { it.timeStamp }
                 .map { it.toCell() })
             if (oldSize != list.size && list.isNotEmpty()) {
-                oldSize = list.size
                 arrayList.add(HomeAdapter.Cell.NeedMore)
             }
+            oldSize = list.size
             arrayList
         }
 
@@ -42,7 +41,7 @@ class HomeActivityViewModel(
 
         filtersLiveData.addSource(filterLiveDataUseCase.data) {
             oldSize = -1
-            refresh(true)
+//            refresh(true)
             filtersLiveData.postValue(it)
         }
     }

@@ -12,8 +12,10 @@ import dev.mesmoustaches.android.view.GenericViewHolder
 import dev.mesmoustaches.domain.model.EventDomain
 import kotlinx.android.synthetic.main.item_event.view.*
 
-class HomeAdapter(private val needMore: (Int) -> Unit,
-                  private val onItemClicked: (Cell) -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
+class HomeAdapter(
+    private val needMore: (Int) -> Unit,
+    private val onItemClicked: (Cell) -> Unit
+) : RecyclerView.Adapter<GenericViewHolder>() {
 
     var items = listOf<Cell>()
 
@@ -52,9 +54,18 @@ class HomeAdapter(private val needMore: (Int) -> Unit,
         }
     }
 
-    inner class NeedMoreViewHolder(itemView: View, private val needMore: (Int) -> Unit) : GenericViewHolder(itemView) {
+    inner class NeedMoreViewHolder(itemView: View, private val needMore: (Int) -> Unit) :
+        GenericViewHolder(itemView) {
         override fun <T> bind(t: T) {
             needMore.invoke(itemCount)
+            itemView.animate()
+                .alpha(0f)
+                .setStartDelay(3000L)
+                .withEndAction{
+                    items = items.filterIsInstance<Cell.DataCell>()
+                    notifyItemRemoved(items.size)
+                }
+                .start()
         }
     }
 
@@ -105,4 +116,5 @@ fun EventDomain.toCell() = HomeAdapter.Cell.DataCell(
     id = id,
     title = title,
     date = dateText.removeSuffix("<br />"),
-    image = image)
+    image = image
+)

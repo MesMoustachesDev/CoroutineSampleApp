@@ -36,23 +36,25 @@ class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<Gene
         override fun <T> bind(t: T) {
             val item = t as Filter
             itemView.checkbox.text = item.name
+            itemView.checkbox.setOnCheckedChangeListener(null)
             itemView.checkbox.isChecked = item.selected
-            if (item.selected) {
-                lastItemChecked = item
-                lastViewChecked = itemView.checkbox
-            }
+
             itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     lastItemChecked?.selected = false
-                    lastViewChecked?.isChecked = false
+                    notifyItemChanged(items.indexOf(lastItemChecked))
                 }
                 item.selected = isChecked
+                lastItemChecked = item
+                notifyItemChanged(items.indexOf(item))
                 onFilterChanged()
             }
         }
     }
 
     fun update(events: List<Filter>) {
+        val selectedItem = events.firstOrNull { it.selected }
+        lastItemChecked = selectedItem
 //        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
         items = events
 //        diffResult.dispatchUpdatesTo(this)

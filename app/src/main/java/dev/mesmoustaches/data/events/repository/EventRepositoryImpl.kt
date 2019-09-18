@@ -24,7 +24,7 @@ class EventRepositoryImpl(
     private var fetchRunning = false
 
     private val events = localDataSource.queryList(DataSource.Spec.All())
-    private val filters =  filterDataSource.queryList(DataSource.Spec.All())
+    private val filters = filterDataSource.queryList(DataSource.Spec.All())
 
     private val loading = MutableLiveData<Boolean>()
 
@@ -36,8 +36,7 @@ class EventRepositoryImpl(
 
     override suspend fun setFilters(filters: List<FacetGroup>) {
         withContext(Dispatchers.IO) {
-            filterDataSource.remove(DataSource.Spec.All())
-            filterDataSource.add(filters)
+            filterDataSource.updateAndAdd(filters)
         }
     }
 
@@ -45,7 +44,6 @@ class EventRepositoryImpl(
         forceUpdate: Boolean,
         loadMore: Boolean
     ) {
-        if (fetchRunning) return
         if (!cacheStrategy.isCacheValid() || forceUpdate || loadMore) {
             loading.postValue(true)
             Timber.d("Loading from api")
@@ -61,6 +59,7 @@ class EventRepositoryImpl(
                                 nonNullFacets
                                     .filter { it.selected }
                                     .forEach {
+                                        // fix issue where facet sent by server is not the one server is waiting for
                                         filterMap["refine.${facetGroup.id}"] = it.path
                                     }
                             }

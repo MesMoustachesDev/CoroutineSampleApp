@@ -1,10 +1,7 @@
 package dev.mesmoustaches.data.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import dev.mesmoustaches.data.model.getout.FacetGroup
 
 @Dao
@@ -29,4 +26,10 @@ interface FilterGroupsDao {
 
     @Query("SELECT * from filters_group")
     fun getFilterGroupsNoLiveData(): List<FacetGroup>
+
+    @Transaction
+    suspend fun clearAndAdd(filters: List<FacetGroup>) {
+        clearFilterGroupList()
+        addFilterGroupList(filters)
+    }
 }
