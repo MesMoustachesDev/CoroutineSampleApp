@@ -8,17 +8,19 @@ import androidx.lifecycle.launchDataLoad
 import dev.mesmoustaches.domain.model.FilterCategoryDomain
 import dev.mesmoustaches.domain.usecase.GetEventsUseCase
 import dev.mesmoustaches.domain.usecase.GetFiltersUseCase
+import dev.mesmoustaches.domain.usecase.GetPaginationSizeUseCase
 import dev.mesmoustaches.presentation.common.BaseViewModel
 import kotlinx.coroutines.Job
 
 class HomeActivityViewModel(
     private val eventsLiveDataUseCase: GetEventsUseCase,
+    private val getPaginationSizeUseCase: GetPaginationSizeUseCase,
     filterLiveDataUseCase: GetFiltersUseCase,
     context: Context
 ) : BaseViewModel(context) {
 
     private var localJob: Job? = null
-    private var oldSize = -1
+    private var oldSize = 0
 
     val loadingLiveData = eventsLiveDataUseCase.loading
     val errorLiveData = MutableLiveData<String>()
@@ -41,12 +43,12 @@ class HomeActivityViewModel(
 
         filtersLiveData.addSource(filterLiveDataUseCase.data) {
             oldSize = -1
-//            refresh(true)
             filtersLiveData.postValue(it)
         }
     }
 
     private fun refresh(forceUpdate: Boolean = false) {
+        oldSize = -1
         localJob = launchDataLoad(
             null,
             errorLiveData,

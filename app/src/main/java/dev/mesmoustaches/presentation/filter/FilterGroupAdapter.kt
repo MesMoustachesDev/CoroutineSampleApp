@@ -61,6 +61,10 @@ class FilterGroupAdapter(val onFilterChanged: (List<Cell>) -> Unit) : RecyclerVi
         override fun <T> bind(t: T) {
             val item = t as Cell
             itemView.name.setText(item.name)
+
+            itemView.choice1.isChecked = t.filters?.get(0)?.selected ?: false
+            itemView.choice2.isChecked = t.filters?.get(1)?.selected ?: false
+
             itemView.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.choice1 -> {

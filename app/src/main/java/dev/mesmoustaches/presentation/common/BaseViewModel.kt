@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel(context: Context) : ViewModel(), CoroutineScope {
-    protected var job = Job()
+    private var job = Job()
     val getError = { error: Exception -> error.errorToFailure().toMessage(context) }
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + job

@@ -34,6 +34,8 @@ class EventRepositoryImpl(
 
     override fun getFilters(): LiveData<List<FacetGroup>> = filters
 
+    override fun getPaginationSize() = 50
+
     override suspend fun setFilters(filters: List<FacetGroup>) {
         withContext(Dispatchers.IO) {
             filterDataSource.updateAndAdd(filters)
@@ -67,14 +69,14 @@ class EventRepositoryImpl(
                     }
                     val result = apiService.getEvents(
                         start = if (!loadMore) 0 else events.value?.size ?: 0,
-                        rows = 50,
+                        rows = getPaginationSize(),
                         refine = filterMap
                     )
                     if (!loadMore) {
                         result.records?.let {
                             localDataSource.updateAndAdd(it.filterNotNull())
+                            cacheStrategy.newCacheSet()
                         }
-//                        localDataSource.remove(DataSource.Spec.All())
                     } else {
                         result.records?.let {
                             localDataSource.add(it.filterNotNull())

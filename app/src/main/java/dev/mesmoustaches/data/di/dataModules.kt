@@ -23,7 +23,7 @@ val repoModules = module {
 }
 
 val cacheModules = module {
-    single { EventCacheStrategy() as CacheStrategy<RecordData> }
+    single { EventCacheStrategy(get()) as CacheStrategy<RecordData> }
 }
 
 val netModule = module {

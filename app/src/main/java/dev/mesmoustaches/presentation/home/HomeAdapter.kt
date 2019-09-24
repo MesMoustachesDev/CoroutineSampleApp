@@ -7,6 +7,7 @@ import android.view.setTextViewHTML
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.GenericViewHolder
 import dev.mesmoustaches.domain.model.EventDomain
@@ -46,7 +47,8 @@ class HomeAdapter(
             itemView.date.setTextViewHTML(item.date)
             Glide.with(itemView.image)
                 .load(item.image)
-                .placeholder(R.drawable.logo)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .centerCrop()
                 .into(itemView.image)
             itemView.setOnClickListener {
                 onItemClicked(item)
@@ -58,14 +60,6 @@ class HomeAdapter(
         GenericViewHolder(itemView) {
         override fun <T> bind(t: T) {
             needMore.invoke(itemCount)
-            itemView.animate()
-                .alpha(0f)
-                .setStartDelay(3000L)
-                .withEndAction{
-                    items = items.filterIsInstance<Cell.DataCell>()
-                    notifyItemRemoved(items.size)
-                }
-                .start()
         }
     }
 

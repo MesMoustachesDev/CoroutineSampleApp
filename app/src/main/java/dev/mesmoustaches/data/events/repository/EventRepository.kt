@@ -18,4 +18,5 @@ interface EventRepository {
     fun getFilters(): LiveData<List<FacetGroup>>
     suspend fun setFilters(filters: List<FacetGroup>)
     fun getLoading(): LiveData<Boolean>
+    fun getPaginationSize(): Int
 }
