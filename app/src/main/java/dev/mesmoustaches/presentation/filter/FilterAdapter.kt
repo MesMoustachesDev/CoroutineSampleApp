@@ -3,18 +3,16 @@ package dev.mesmoustaches.presentation.filter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.GenericViewHolder
-import dev.mesmoustaches.domain.model.Filter
+import dev.mesmoustaches.domain.model.FilterType
 import kotlinx.android.synthetic.main.item_filter_list.view.*
 
 class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<GenericViewHolder>() {
 
-    private var items = listOf<Filter>()
-    private var lastItemChecked: Filter? = null
+    private var items = listOf<FilterCell>()
+    private var lastItemChecked: FilterCell? = null
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(items[position])
@@ -33,7 +31,7 @@ class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<Gene
 
     inner class FilterListViewHolder(itemView: View) : GenericViewHolder(itemView) {
         override fun <T> bind(t: T) {
-            val item = t as Filter
+            val item = t as FilterCell
             itemView.checkbox.text = item.name
             itemView.checkbox.setOnCheckedChangeListener(null)
             itemView.checkbox.isChecked = item.selected
@@ -51,34 +49,17 @@ class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<Gene
         }
     }
 
-    fun update(events: List<Filter>) {
+    fun update(events: List<FilterCell>) {
         val selectedItem = events.firstOrNull { it.selected }
         lastItemChecked = selectedItem
-//        val diffResult = DiffUtil.calculateDiff(DiffCallback(items, events))
         items = events
-//        diffResult.dispatchUpdatesTo(this)
         notifyDataSetChanged()
     }
 
-    class DiffCallback(
-        private val oldList: List<Filter>,
-        private val newList: List<Filter>
-    ) : DiffUtil.Callback() {
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldList[oldItemPosition]
-            val new = newList[newItemPosition]
-            return (old.name == new.name)
-        }
-
-        override fun getOldListSize(): Int = oldList.size
-
-        override fun getNewListSize(): Int = newList.size
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldList[oldItemPosition]
-            val new = newList[newItemPosition]
-            return (old.selected == new.selected)
-        }
-    }
+    data class FilterCell(
+        val name: String,
+        val path: String,
+        var selected: Boolean,
+        val type: FilterType
+    )
 }

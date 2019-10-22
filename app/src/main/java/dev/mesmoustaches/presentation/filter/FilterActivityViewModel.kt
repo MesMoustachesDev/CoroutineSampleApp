@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import dev.mesmoustaches.R
+import dev.mesmoustaches.domain.model.Filter
 import dev.mesmoustaches.domain.model.FilterCategoryDomain
 import dev.mesmoustaches.domain.usecase.GetFiltersUseCase
 import dev.mesmoustaches.domain.usecase.SetFiltersUseCase
 import dev.mesmoustaches.presentation.common.BaseViewModel
+import kot.capitalizeEachWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,23 +28,27 @@ class FilterActivityViewModel(
     val errorLiveData = MutableLiveData<String>()
     val filtersLiveData =
         Transformations.map(filterLiveDataUseCase.data) { list ->
-            list.map { it.toCell(it.nameToDisplay.toDisplay()) }
+            list.map { filterCategoryDomain ->
+                filterCategoryDomain.toCell(
+                    filterCategoryDomain.nameToDisplay.toDisplay(),
+                    filterCategoryDomain.filters?.map { it.toFilterCell() })
+            }
         }
 
     fun updateFilters(filters: List<FilterGroupAdapter.Cell>) {
-            uiScope.launch {
-                try {
-                    setFilterLiveDataUseCase.execute(filters.map {
-                        FilterCategoryDomain(
-                            id = it.id,
-                            nameToDisplay = it.id,
-                            filters = it.filters
-                        )
-                    })
-                } catch (error: Exception) {
+        uiScope.launch {
+            try {
+                setFilterLiveDataUseCase.execute(filters.map { cell ->
+                    FilterCategoryDomain(
+                        id = cell.id,
+                        nameToDisplay = cell.id,
+                        filters = cell.filters?.map { it.toFilter() }
+                    )
+                })
+            } catch (error: Exception) {
 //                    errorLiveData?.value = getErrorMessage.invoke(error)
-                }
             }
+        }
     }
 
     private fun String.toDisplay(): Int = when (this) {
@@ -54,4 +60,28 @@ class FilterActivityViewModel(
         "category" -> R.string.category
         else -> R.string.unknown
     }
+
+    private fun Filter.toFilterCell(): FilterAdapter.FilterCell =
+        FilterAdapter.FilterCell(
+            name = when (this.name) {
+                "0" -> "Non"
+                "1" -> "Oui"
+                else -> this.name.capitalizeEachWord()
+            },
+            path = this.path,
+            selected = this.selected,
+            type = this.type
+        )
+
+    private fun FilterAdapter.FilterCell.toFilter(): Filter =
+        Filter(
+            name = when (this.name) {
+                "Non" -> "0"
+                "Oui" -> "1"
+                else -> this.name.decapitalize()
+            },
+            path = this.path,
+            selected = this.selected,
+            type = this.type
+        )
 }
