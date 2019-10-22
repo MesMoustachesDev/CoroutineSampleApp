@@ -45,23 +45,4 @@ sealed class EventDomain {
     ): EventDomain()
 }
 
-fun RecordData.toDomain(): EventDomain {
-
-/* date formatter in local timezone */
-    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'+00:00'")
-    return EventDomain.EventDomainData(
-        id = recordid,
-        title = fields?.title ?: "",
-        description = "${fields?.description ?: ""} <br/><br/><br/>${fields?.priceDetail ?: ""} <br/><br/><br/>${fields?.contactUrl?.toLinkBalise() ?: ""} ",
-        timeStamp = sdf.parse(recordTimestamp).time,
-        dateText = fields?.dateDescription ?: "",
-        image = fields?.coverUrl,
-        address = "${fields?.addressStreet}\n${fields?.addressZipcode} ${fields?.addressCity}",
-        position = (geometry?.coordinates?.get(1) ?: 0.0) to (geometry?.coordinates?.get(0) ?: 0.0),
-        phone = fields?.contactPhone,
-        mail = fields?.contactMail,
-        facebook = fields?.contactFacebook
-    )
-}
-
 fun String.toLinkBalise() = "<a href=\"$this\">Website</a>"

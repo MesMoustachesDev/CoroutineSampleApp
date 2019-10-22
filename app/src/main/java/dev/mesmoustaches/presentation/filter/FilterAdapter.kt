@@ -15,7 +15,6 @@ class FilterAdapter(val onFilterChanged: () -> Unit) : RecyclerView.Adapter<Gene
 
     private var items = listOf<Filter>()
     private var lastItemChecked: Filter? = null
-    private var lastViewChecked: CheckBox? = null
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(items[position])

@@ -14,41 +14,35 @@ import kotlinx.coroutines.Job
 
 class HomeActivityViewModel(
     private val eventsLiveDataUseCase: GetEventsUseCase,
-    private val getPaginationSizeUseCase: GetPaginationSizeUseCase,
     filterLiveDataUseCase: GetFiltersUseCase,
     context: Context
 ) : BaseViewModel(context) {
 
     private var localJob: Job? = null
-    private var oldSize = 0
 
     val loadingLiveData = eventsLiveDataUseCase.loading
     val errorLiveData = MutableLiveData<String>()
     val eventsLiveData =
         Transformations.map(eventsLiveDataUseCase.data) { list ->
-            val arrayList: ArrayList<HomeAdapter.Cell> = ArrayList(list
+            val arrayList: ArrayList<HomeAdapter.Cell> = ArrayList(list.events
                 .map { it.toCell() })
-            if (oldSize != list.size && list.isNotEmpty()) {
+            if (list.hasMore) {
                 arrayList.add(HomeAdapter.Cell.NeedMore)
             }
-            oldSize = list.size
             arrayList
         }
 
     val filtersLiveData = MediatorLiveData<List<FilterCategoryDomain>>()
 
     init {
-        oldSize = -1
         refresh()
 
         filtersLiveData.addSource(filterLiveDataUseCase.data) {
-            oldSize = -1
             filtersLiveData.postValue(it)
         }
     }
 
     private fun refresh(forceUpdate: Boolean = false) {
-        oldSize = -1
         localJob = launchDataLoad(
             null,
             errorLiveData,

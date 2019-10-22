@@ -1,8 +1,6 @@
 package dev.mesmoustaches.domain.usecase
 
-import androidx.lifecycle.Transformations
-import dev.mesmoustaches.data.events.repository.EventRepository
-import dev.mesmoustaches.domain.model.toDomain
+import dev.mesmoustaches.domain.repository.EventRepository
 
 class GetPaginationSizeUseCase(
     private val eventRepository: EventRepository

@@ -62,8 +62,12 @@ class FilterGroupAdapter(val onFilterChanged: (List<Cell>) -> Unit) : RecyclerVi
             val item = t as Cell
             itemView.name.setText(item.name)
 
-            itemView.choice1.isChecked = t.filters?.get(0)?.selected ?: false
-            itemView.choice2.isChecked = t.filters?.get(1)?.selected ?: false
+            t.filters?.get(0)?.selected?.let {
+                itemView.choice1.isChecked = t.filters[0].selected
+            }
+            t.filters?.get(1)?.selected?.let {
+                itemView.choice2.isChecked = t.filters[1].selected
+            }
 
             itemView.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
@@ -132,7 +136,7 @@ class FilterGroupAdapter(val onFilterChanged: (List<Cell>) -> Unit) : RecyclerVi
     )
 }
 
-fun FilterCategoryDomain.toCell() = FilterGroupAdapter.Cell(
+fun FilterCategoryDomain.toCell(nameToDisplay: Int) = FilterGroupAdapter.Cell(
     id = id,
     name = nameToDisplay,
     filters = filters

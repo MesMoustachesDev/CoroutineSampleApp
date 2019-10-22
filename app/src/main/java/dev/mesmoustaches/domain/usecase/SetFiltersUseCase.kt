@@ -1,6 +1,6 @@
 package dev.mesmoustaches.domain.usecase
 
-import dev.mesmoustaches.data.events.repository.EventRepository
+import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.data.model.getout.Facet
 import dev.mesmoustaches.data.model.getout.FacetGroup
 import dev.mesmoustaches.domain.model.FilterCategoryDomain

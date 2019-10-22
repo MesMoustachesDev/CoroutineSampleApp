@@ -25,7 +25,7 @@ val activityModules = module {
 }
 
 val viewModelModules = module {
-    viewModel { HomeActivityViewModel(get(), get(), get(), get()) }
+    viewModel { HomeActivityViewModel(get(), get(), get()) }
     viewModel { FilterActivityViewModel(get(), get(), get()) }
     viewModel { EventDetailsActivityViewModel(get(), get()) }
 }

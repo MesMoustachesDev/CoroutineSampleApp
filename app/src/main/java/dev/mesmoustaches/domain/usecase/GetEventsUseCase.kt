@@ -2,18 +2,15 @@ package dev.mesmoustaches.domain.usecase
 
 import androidx.lifecycle.Transformations
 import dev.mesmoustaches.coroutines.CoroutineUseCase
-import dev.mesmoustaches.data.events.repository.EventRepository
+import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.domain.model.EventDomain
-import dev.mesmoustaches.domain.model.toDomain
 import timber.log.Timber
 
 class GetEventsUseCase(
     private val eventRepository: EventRepository
 ) : CoroutineUseCase<GetEventsUseCase.Params, List<EventDomain>>() {
 
-    val data = Transformations.map(eventRepository.getEvents()) { list ->
-        list.map { it.toDomain() }
-    }
+    val data = eventRepository.getEvents()
 
     val loading = eventRepository.getLoading()
 

@@ -2,9 +2,8 @@ package dev.mesmoustaches.domain.usecase
 
 import androidx.lifecycle.Transformations
 import dev.mesmoustaches.coroutines.CoroutineUseCase
-import dev.mesmoustaches.data.events.repository.EventRepository
+import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.domain.model.EventDomain
-import dev.mesmoustaches.domain.model.toDomain
 import timber.log.Timber
 
 class GetEventDetailsUseCase(
@@ -24,9 +23,9 @@ class GetEventDetailsUseCase(
         }
     }
 
-    fun getLiveData(id: String?) = Transformations.map(eventRepository.getEvents()) { list ->
-        val event = list.firstOrNull { it.recordid == id }
-        event?.toDomain() ?: EventDomain.NotFoundEvent()
+    fun getLiveData(id: String?) = Transformations.map(eventRepository.getEvents()) { events ->
+        val event = events.events.firstOrNull { it.id == id }
+        event ?: EventDomain.NotFoundEvent()
     }
 
     data class Params(

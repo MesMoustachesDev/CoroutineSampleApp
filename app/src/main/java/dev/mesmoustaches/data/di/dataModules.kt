@@ -6,7 +6,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import dev.mesmoustaches.BuildConfig
 import dev.mesmoustaches.data.common.CacheStrategy
 import dev.mesmoustaches.data.events.remote.ApiService
-import dev.mesmoustaches.data.events.repository.EventRepository
+import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.data.events.repository.EventRepositoryImpl
 import dev.mesmoustaches.data.events.repository.cache.EventCacheStrategy
 import dev.mesmoustaches.data.model.getout.RecordData

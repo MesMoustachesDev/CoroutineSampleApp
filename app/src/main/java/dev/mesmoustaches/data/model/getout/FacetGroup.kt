@@ -1,6 +1,5 @@
 package dev.mesmoustaches.data.model.getout
 
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,6 +7,9 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import dev.mesmoustaches.domain.model.Filter
+import dev.mesmoustaches.domain.model.FilterCategoryDomain
+import dev.mesmoustaches.domain.model.FilterType
 import java.util.*
 
 @Entity(tableName = "filters_group")
@@ -40,4 +42,19 @@ class FacetListConverter {
         val gson = Gson()
         return gson.toJson(someObjects)
     }
+}
+
+fun FacetGroup.toDomain(): FilterCategoryDomain {
+    return FilterCategoryDomain(
+        id = id,
+        nameToDisplay = id,
+        filters = facets?.map {
+            Filter(
+                it?.name ?: "",
+                it?.path ?: "",
+                it?.selected ?: false,
+                if (it?.name?.toIntOrNull() == null) FilterType.ListFilter else FilterType.CheckBoxFilter
+            )
+        }
+    )
 }
