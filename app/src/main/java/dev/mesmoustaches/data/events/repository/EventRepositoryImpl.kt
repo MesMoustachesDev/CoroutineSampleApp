@@ -134,6 +134,7 @@ class EventRepositoryImpl(
                     localDataSource.add(it.filterNotNull())
                     cacheStrategy.newCacheSet()
                 }
+                hasMore.postValue((result.records?.size ?:0) > 0)
             } catch (error: Throwable) {
                 throw error
             } finally {
