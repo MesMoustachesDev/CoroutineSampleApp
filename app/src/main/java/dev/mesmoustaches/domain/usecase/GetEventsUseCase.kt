@@ -1,6 +1,5 @@
 package dev.mesmoustaches.domain.usecase
 
-import androidx.lifecycle.Transformations
 import dev.mesmoustaches.coroutines.CoroutineUseCase
 import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.domain.model.EventDomain
@@ -11,8 +10,6 @@ class GetEventsUseCase(
 ) : CoroutineUseCase<GetEventsUseCase.Params, List<EventDomain>>() {
 
     val data = eventRepository.getEvents()
-
-    val loading = eventRepository.getLoading()
 
     override suspend fun createCoroutine(input: Params?) {
         try {

@@ -8,8 +8,6 @@ import timber.log.Timber
 class GetFiltersUseCase(
     eventRepository: EventRepository
 ) {
-    val loading = eventRepository.getLoading()
-
     val data = Transformations.map(eventRepository.getFilters()) { list ->
         Timber.d("GetFiltersUseCase got new data")
         list.map { it.toDomain() }

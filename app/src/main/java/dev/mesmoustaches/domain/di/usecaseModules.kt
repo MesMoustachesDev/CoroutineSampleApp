@@ -8,5 +8,4 @@ val useCaseModules = module {
     factory { GetFiltersUseCase(get()) }
     factory { SetFiltersUseCase(get()) }
     factory { GetEventDetailsUseCase(get()) }
-    factory { GetPaginationSizeUseCase(get()) }
 }

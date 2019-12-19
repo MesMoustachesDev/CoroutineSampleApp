@@ -3,40 +3,51 @@ package dev.mesmoustaches.presentation.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.nonNullObserve
 import androidx.lifecycle.nonNullObserveConsume
 import com.google.android.material.snackbar.Snackbar
 import dev.mesmoustaches.R
 import dev.mesmoustaches.android.view.linkVisibilityTo
+import dev.mesmoustaches.presentation.MainActivityViewModel
 import dev.mesmoustaches.presentation.details.EventDetailsActivity
 import dev.mesmoustaches.presentation.routing.FilterScreen
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.main_progress_bar.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
-class HomeActivity : AppCompatActivity() {
-    private val viewModel: HomeActivityViewModel by viewModel()
+class HomeFragment : Fragment() {
+    private val viewModel: MainActivityViewModel by sharedViewModel()
     private val filterScreen by inject<FilterScreen>()
 
     private val homeAdapter: HomeAdapter by lazy {
         HomeAdapter({
             viewModel.loadMore()
-        }) {
-            startActivity(EventDetailsActivity.createIntent(this, it.id))
+        }) { cell ->
+            context?.let {
+                startActivity(EventDetailsActivity.createIntent(it, cell.id))
+            }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setObservers()
         setListeners()
 
-        homeAdapter.setHasStableIds(true)
         homeRecyclerView.adapter = homeAdapter
     }
 
@@ -67,13 +78,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setListeners() {
         fab?.setOnClickListener {
-            startActivity(filterScreen.getIntent())
+            viewModel.onFilterClicked()
         }
     }
 
     companion object {
         fun createIntent(context: Context): Intent {
-            return Intent(context, HomeActivity::class.java)
+            return Intent(context, HomeFragment::class.java)
         }
     }
 }

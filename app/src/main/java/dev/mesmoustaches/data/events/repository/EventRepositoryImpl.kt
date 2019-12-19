@@ -32,12 +32,9 @@ class EventRepositoryImpl(
 
     private val filters = filterDataSource.queryList(DataSource.Spec.All())
 
-    private val loading = MutableLiveData<Boolean>()
-    private val hasMore = MutableLiveData<Boolean>()
+    private val hasMore = Boolean
 
     override fun getEvents() = events
-
-    override fun getLoading(): LiveData<Boolean> = loading
 
     override fun getFilters(): LiveData<List<FacetGroup>> = filters
 
@@ -64,7 +61,6 @@ class EventRepositoryImpl(
         loadMore: Boolean
     ) {
         if (!cacheStrategy.isCacheValid() || forceUpdate || loadMore) {
-            loading.postValue(true)
             Timber.d("Loading from api")
             fetchRunning = true
             withContext(Dispatchers.IO) {
@@ -113,7 +109,6 @@ class EventRepositoryImpl(
                 } catch (error: Throwable) {
                     throw error
                 } finally {
-                    loading.postValue(false)
                     fetchRunning = false
                 }
             }
@@ -123,7 +118,6 @@ class EventRepositoryImpl(
     }
 
     override suspend fun fetchMoreEvents(start: Int, rows: Int) {
-        loading.postValue(true)
         if (fetchRunning) return
         Timber.d("Loading from api")
         fetchRunning = true
@@ -138,7 +132,6 @@ class EventRepositoryImpl(
             } catch (error: Throwable) {
                 throw error
             } finally {
-                loading.postValue(false)
                 fetchRunning = false
             }
         }

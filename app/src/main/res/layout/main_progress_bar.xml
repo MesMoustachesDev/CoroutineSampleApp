@@ -9,4 +9,4 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loader"
-        tools:showIn="@layout/activity_home" />
+        tools:showIn="@layout/fragment_home" />
