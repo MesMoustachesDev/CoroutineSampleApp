@@ -1,8 +1,5 @@
 package dev.mesmoustaches.data.events.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import dev.mesmoustaches.data.common.CacheStrategy
 import dev.mesmoustaches.data.common.DataSource
 import dev.mesmoustaches.data.events.remote.ApiService
@@ -14,6 +11,8 @@ import dev.mesmoustaches.data.room.FiltersDataSource
 import dev.mesmoustaches.domain.model.EventsBusiness
 import dev.mesmoustaches.domain.repository.EventRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -28,26 +27,24 @@ class EventRepositoryImpl(
     private var fetchRunning = false
 
     private val privateEvents = localDataSource.queryList(DataSource.Spec.All())
-    private val events = MediatorLiveData<EventsBusiness>()
+    private var events: Flow<EventsBusiness>
 
     private val filters = filterDataSource.queryList(DataSource.Spec.All())
 
-    private val hasMore = Boolean
+    private var hasMore = true
+    private var listSize: Int = 0
 
     override fun getEvents() = events
 
-    override fun getFilters(): LiveData<List<FacetGroup>> = filters
+    override fun getFilters(): Flow<List<FacetGroup>> = filters
 
     override fun getPaginationSize() = 50
 
     init {
-        events.addSource(privateEvents) { list ->
-            events.postValue(EventsBusiness(list.map { it.toDomain() }, hasMore.value ?: false))
+        events = privateEvents.map { list ->
+            listSize = list.size
+            EventsBusiness(list.map { it.toDomain() }, hasMore)
         }
-        events.addSource(hasMore) { hasMore ->
-            events.postValue(EventsBusiness(privateEvents.value?.map { it.toDomain() } ?: listOf(), hasMore))
-        }
-        hasMore.postValue(true)
     }
 
     override suspend fun setFilters(filters: List<FacetGroup>) {
@@ -81,7 +78,7 @@ class EventRepositoryImpl(
                         }
                     }
                     val result = apiService.getEvents(
-                        start = if (!loadMore) 0 else privateEvents.value?.size ?: 0,
+                        start = if (!loadMore) 0 else listSize,
                         rows = getPaginationSize(),
                         refine = filterMap
                     )
@@ -97,11 +94,9 @@ class EventRepositoryImpl(
                         }
                     }
 
-                    hasMore.postValue((result.records?.size ?:0) > 0)
-
                     result.facetGroups?.let {
                         // FIXME Dont remove existing filters
-                        if (filters.value == null || filters.value?.isEmpty() == true) {
+                        if (filtersFromDB.isEmpty()) {
                             filterDataSource.add(it.filterNotNull())
                         }
                     }
@@ -128,7 +123,7 @@ class EventRepositoryImpl(
                     localDataSource.add(it.filterNotNull())
                     cacheStrategy.newCacheSet()
                 }
-                hasMore.postValue((result.records?.size ?:0) > 0)
+                hasMore = (result.records?.size ?:0) > 0
             } catch (error: Throwable) {
                 throw error
             } finally {

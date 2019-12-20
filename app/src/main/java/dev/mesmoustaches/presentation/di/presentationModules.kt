@@ -26,7 +26,7 @@ val activityModules = module {
 }
 
 val viewModelModules = module {
-    viewModel { HomeFragmentViewModel(get(), get()) }
+    viewModel { HomeFragmentViewModel(get()) }
     viewModel { FilterFragmentViewModel(get(), get()) }
     viewModel { EventDetailsActivityViewModel(get(), get()) }
     viewModel { MainActivityViewModel(get(), get(), get(), get()) }

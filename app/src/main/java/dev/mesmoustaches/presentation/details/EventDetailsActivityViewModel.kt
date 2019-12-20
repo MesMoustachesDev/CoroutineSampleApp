@@ -3,9 +3,10 @@ package dev.mesmoustaches.presentation.details
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import dev.mesmoustaches.domain.usecase.GetEventDetailsUseCase
 import dev.mesmoustaches.presentation.common.BaseViewModel
+import kotlinx.coroutines.flow.map
 
 class EventDetailsActivityViewModel(
     private val eventsLiveDataUseCase: GetEventDetailsUseCase,
@@ -28,32 +29,32 @@ class EventDetailsActivityViewModel(
     val openMapLiveData = MutableLiveData<Pair<Double, Double>>()
 
     fun getLiveData(extractId: String?) {
-        val liveData = eventsLiveDataUseCase.getLiveData(extractId)
-        imageLiveData = Transformations.map(liveData) {
+        val liveData = eventsLiveDataUseCase.getStream(extractId)
+        imageLiveData = liveData.map {
             coordinates = it.position
-            it.image
-        }
-        descriptionLiveData = Transformations.map(liveData) {
+            it.image ?: ""
+        }.asLiveData()
+        descriptionLiveData = liveData.map {
             it.description
-        }
-        titleLiveData = Transformations.map(liveData) {
+        }.asLiveData()
+        titleLiveData = liveData.map {
             it.title
-        }
-        addressLiveData = Transformations.map(liveData) {
-            it.address
-        }
+        }.asLiveData()
+        addressLiveData = liveData.map {
+            it.address ?: ""
+        }.asLiveData()
 
-        facebookLiveData = Transformations.map(liveData) {
-            it.facebook
-        }
+        facebookLiveData = liveData.map {
+            it.facebook ?: ""
+        }.asLiveData()
 
-        phoneLiveData = Transformations.map(liveData) {
-            it.phone
-        }
+        phoneLiveData = liveData.map {
+            it.phone ?: ""
+        }.asLiveData()
 
-        mailLiveData = Transformations.map(liveData) {
-            it.mail
-        }
+        mailLiveData = liveData.map {
+            it.mail ?: ""
+        }.asLiveData()
     }
 
     fun onMapClicked() {

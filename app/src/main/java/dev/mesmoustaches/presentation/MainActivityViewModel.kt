@@ -1,10 +1,7 @@
 package dev.mesmoustaches.presentation
 
 import android.content.Context
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.launchDataLoad
+import androidx.lifecycle.*
 import dev.mesmoustaches.domain.model.Filter
 import dev.mesmoustaches.domain.model.FilterCategoryDomain
 import dev.mesmoustaches.domain.usecase.GetEventsUseCase
@@ -16,6 +13,7 @@ import dev.mesmoustaches.presentation.filter.FilterGroupAdapter
 import dev.mesmoustaches.presentation.home.HomeAdapter
 import dev.mesmoustaches.presentation.home.toCell
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.map
 
 class MainActivityViewModel(
     private val eventsLiveDataUseCase: GetEventsUseCase,
@@ -33,24 +31,19 @@ class MainActivityViewModel(
 
     val loadingLiveData = MutableLiveData<Boolean>()
     val errorLiveData = MutableLiveData<String>()
-    val eventsLiveData =
-        Transformations.map(eventsLiveDataUseCase.data) { list ->
+    val eventsLiveData = eventsLiveDataUseCase.data.map { list ->
             val arrayList: ArrayList<HomeAdapter.Cell> = ArrayList(list.events
                 .map { it.toCell() })
             if (list.hasMore) {
                 arrayList.add(HomeAdapter.Cell.NeedMore)
             }
             arrayList
-        }
+        }.asLiveData()
 
-    val filtersLiveData = MediatorLiveData<List<FilterCategoryDomain>>()
+    val filtersLiveData = filterLiveDataUseCase.data.asLiveData() //MediatorLiveData<List<FilterCategoryDomain>>()
 
     init {
         refresh()
-
-        filtersLiveData.addSource(filterLiveDataUseCase.data) {
-            filtersLiveData.postValue(it)
-        }
 
         currentViewLiveData.postValue(CurrentView.HomeView)
     }

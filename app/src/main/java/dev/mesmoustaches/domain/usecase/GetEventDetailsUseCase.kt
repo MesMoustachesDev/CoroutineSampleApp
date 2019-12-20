@@ -1,9 +1,9 @@
 package dev.mesmoustaches.domain.usecase
 
-import androidx.lifecycle.Transformations
 import dev.mesmoustaches.coroutines.CoroutineUseCase
 import dev.mesmoustaches.domain.repository.EventRepository
 import dev.mesmoustaches.domain.model.EventDomain
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 class GetEventDetailsUseCase(
@@ -23,7 +23,7 @@ class GetEventDetailsUseCase(
         }
     }
 
-    fun getLiveData(id: String?) = Transformations.map(eventRepository.getEvents()) { events ->
+    fun getStream(id: String?) = eventRepository.getEvents().map { events ->
         val event = events.events.firstOrNull { it.id == id }
         event ?: EventDomain.NotFoundEvent()
     }

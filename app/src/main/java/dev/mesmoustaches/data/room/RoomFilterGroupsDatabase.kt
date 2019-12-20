@@ -1,9 +1,9 @@
 package dev.mesmoustaches.data.room
 
-import androidx.lifecycle.LiveData
 import dev.mesmoustaches.data.common.DataSource
 import dev.mesmoustaches.data.common.Specification
 import dev.mesmoustaches.data.model.getout.FacetGroup
+import kotlinx.coroutines.flow.Flow
 
 class RoomFilterGroupsDatabase(
     private val filtersDao: FilterGroupsDao
@@ -35,11 +35,11 @@ class RoomFilterGroupsDatabase(
         }
     }
 
-    override fun queryId(specification: String): LiveData<FacetGroup> =
+    override fun queryId(specification: String): Flow<FacetGroup> =
         filtersDao
             .getFilterGroupsWithRef(specification)
 
-    override fun queryList(specification: Specification): LiveData<List<FacetGroup>> =
+    override fun queryList(specification: Specification): Flow<List<FacetGroup>> =
         filtersDao
             .getFilterGroups()
 

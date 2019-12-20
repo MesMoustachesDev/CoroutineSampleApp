@@ -1,6 +1,6 @@
 package dev.mesmoustaches.data.common
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 interface DataSource<T> {
     fun add(item: T)
@@ -9,8 +9,8 @@ interface DataSource<T> {
     suspend fun updateAndAdd(items: Iterable<T>)
     fun remove(item: T)
     fun remove(specification: Specification)
-    fun queryId(specification: String): LiveData<T>
-    fun queryList(specification: Specification): LiveData<List<T>>
+    fun queryId(specification: String): Flow<T>
+    fun queryList(specification: Specification): Flow<List<T>>
     suspend fun queryListNoLiveData(specification: Specification): List<T>
 
     class Spec : Specification {

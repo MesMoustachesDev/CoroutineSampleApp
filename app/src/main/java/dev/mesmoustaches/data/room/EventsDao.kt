@@ -1,8 +1,8 @@
 package dev.mesmoustaches.data.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import dev.mesmoustaches.data.model.getout.RecordData
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventsDao {
@@ -19,10 +19,10 @@ interface EventsDao {
     fun clearEventList()
 
     @Query("SELECT * from events")
-    fun getEvents(): LiveData<List<RecordData>>
+    fun getEvents(): Flow<List<RecordData>>
 
     @Query("SELECT * from events WHERE recordid = :ref")
-    fun getEventsWithRef(ref: String): LiveData<RecordData>
+    fun getEventsWithRef(ref: String): Flow<RecordData>
 
     @Query("SELECT * from events")
     fun getEventsNoLiveData(): List<RecordData>

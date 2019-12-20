@@ -1,8 +1,8 @@
 package dev.mesmoustaches.data.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import dev.mesmoustaches.data.model.getout.FacetGroup
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FilterGroupsDao {
@@ -19,10 +19,10 @@ interface FilterGroupsDao {
     fun clearFilterGroupList()
 
     @Query("SELECT * from filters_group")
-    fun getFilterGroups(): LiveData<List<FacetGroup>>
+    fun getFilterGroups(): Flow<List<FacetGroup>>
 
     @Query("SELECT * from filters_group WHERE path = :ref")
-    fun getFilterGroupsWithRef(ref: String): LiveData<FacetGroup>
+    fun getFilterGroupsWithRef(ref: String): Flow<FacetGroup>
 
     @Query("SELECT * from filters_group")
     fun getFilterGroupsNoLiveData(): List<FacetGroup>

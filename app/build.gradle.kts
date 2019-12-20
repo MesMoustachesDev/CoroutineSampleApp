@@ -68,6 +68,7 @@ dependencies {
     implementation(Libs.recyclerview)
     implementation(Libs.lifecycle_extensions)
     implementation(Libs.lifecycle_viewmodel_ktx)
+    implementation(Libs.lifecycle_livedata_ktx)
     implementation(Libs.room_runtime)
     implementation(Libs.room_ktx)
     kapt(Libs.room_compiler)

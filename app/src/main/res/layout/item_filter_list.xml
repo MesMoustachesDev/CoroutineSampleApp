@@ -13,7 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.google.android.material.checkbox.MaterialCheckBox
+<androidx.appcompat.widget.AppCompatCheckBox
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/checkbox"
         android:layout_width="match_parent"

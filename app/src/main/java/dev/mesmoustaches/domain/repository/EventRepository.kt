@@ -2,8 +2,8 @@ package dev.mesmoustaches.domain.repository
 
 import androidx.lifecycle.LiveData
 import dev.mesmoustaches.data.model.getout.FacetGroup
-import dev.mesmoustaches.data.model.getout.RecordData
 import dev.mesmoustaches.domain.model.EventsBusiness
+import kotlinx.coroutines.flow.Flow
 
 interface EventRepository {
     /**
@@ -14,9 +14,9 @@ interface EventRepository {
         loadMore: Boolean = false
     )
 
-    fun getEvents(): LiveData<EventsBusiness>
+    fun getEvents(): Flow<EventsBusiness>
     suspend fun fetchMoreEvents(start: Int, rows: Int)
-    fun getFilters(): LiveData<List<FacetGroup>>
+    fun getFilters(): Flow<List<FacetGroup>>
     suspend fun setFilters(filters: List<FacetGroup>)
     fun getPaginationSize(): Int
 }

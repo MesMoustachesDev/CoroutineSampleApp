@@ -112,6 +112,9 @@ object Libs {
   const val lifecycle_viewmodel_ktx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:" +
       Versions.androidx_lifecycle
 
+  const val lifecycle_livedata_ktx: String = "androidx.lifecycle:lifecycle-livedata-ktx:" +
+          Versions.androidx_lifecycle
+
   /**
    * http://tools.android.com
    */

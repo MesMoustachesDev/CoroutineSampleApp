@@ -3,6 +3,7 @@ package dev.mesmoustaches.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.nonNullObserve
+import androidx.lifecycle.nonNullObserveConsume
 import dev.mesmoustaches.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.mesmoustaches.presentation.filter.FilterFragment
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        nonNullObserve(viewModel.currentViewLiveData) {
+        nonNullObserveConsume(viewModel.currentViewLiveData) {
             when (it) {
                 is MainActivityViewModel.CurrentView.FilterView -> launchFiltersView()
                 is MainActivityViewModel.CurrentView.HomeView -> launchHomeView()

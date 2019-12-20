@@ -1,9 +1,9 @@
 package dev.mesmoustaches.data.room
 
-import androidx.lifecycle.LiveData
 import dev.mesmoustaches.data.common.DataSource
 import dev.mesmoustaches.data.common.Specification
 import dev.mesmoustaches.data.model.getout.RecordData
+import kotlinx.coroutines.flow.Flow
 
 class RoomEventsDatabase(
     private val eventDao: EventsDao
@@ -36,11 +36,11 @@ class RoomEventsDatabase(
         }
     }
 
-    override fun queryId(specification: String): LiveData<RecordData> =
+    override fun queryId(specification: String): Flow<RecordData> =
         eventDao
             .getEventsWithRef(specification)
 
-    override fun queryList(specification: Specification): LiveData<List<RecordData>> =
+    override fun queryList(specification: Specification): Flow<List<RecordData>> =
         eventDao
             .getEvents()
 
